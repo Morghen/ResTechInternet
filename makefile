@@ -13,7 +13,7 @@ ALL:
 	
 ser: ServerCheckIn.cpp libUtils.o socketLib.o
 	echo Creation ServerCheckIn.o ...
-	$(CC) ServerCheckIn.cpp libUtils.o socketLib.o -o ServerCheckIn -lpthread -lrt -lnsl -lsocket	  
+	$(CC) ServerCheckIn.cpp libUtils.o socketLib.o -o ServerCheckIn -lpthread -lrt -lnsl
 
 libUtils.o: libUtils.cpp libUtils.h
 	echo Creation de libUtils.o ...

@@ -2,22 +2,94 @@
 #include <stdio.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <netdb.h>
+#include <string.h>
+#include <unistd.h>
 #include "socketLib.h"
 
 
-int ServerInit(void)
+int ServerInit(int pport)
 {
-	int handleSocket=socket(AF_INET,SOCK_STREAM,IPPROTO_TCP);
-	if(handleSocket==-1)
+	//
+	struct hostent *infosHost;
+	struct in_addr adresseIP;
+	struct sockaddr_in adresseSocket;
+	int handleSocket;
+	
+	//creation socket
+	if((handleSocket = socket(AF_INET,SOCK_STREAM,IPPROTO_TCP))==-1)
 	{
-		return -1; // throw
+		// throw
 	}
+	
+	//acquisition info ordi
+	if((infosHost = gethostbyname(""))==0)
+	{
+		//throw
+	}
+	memcpy(&adresseIP, infosHost->h_addr, infosHost->h_length);
+	
+	//prepa struct sockaddr_in
+	memset(&adreseSocket, 0, sizeof(struct sockaddr_in));
+	adresseSocket.sin_family = AF_INET;
+	adresseSocket.sin_port = htons(pport);
+	memcpy(&adresseSocket.sin_addr, infosHost->h_addr, infosHost->h_length);
+	
+	//bind
+	if(bind(handleSocket, (struct cockaddr *)&adresseSocket, sizeof(struct sockaddr_in))== -1)
+	{
+		//throw
+	}
+	return handleSocket;
 }
+
 int ClientInit(void)
-{}
+{
+	//
+}
+
 int SendMsg(void)
-{}
+{
+	//
+}
+
 int RcvMsg(void)
-{}
-int CloseSocket(void)
-{}
+{
+	//
+	
+}
+
+int CloseSocket(int pi)
+{
+	//
+	close(pi);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

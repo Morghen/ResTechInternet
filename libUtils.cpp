@@ -21,3 +21,37 @@ int waitTime(int sec, long nsec)
 	time.tv_nsec = nsec;
 	return nanosleep(&time, NULL);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
