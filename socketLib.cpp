@@ -43,6 +43,28 @@ int ServerInit(int pport)
 	return handleSocket;
 }
 
+int ServerListen(int phandle)
+{
+	//
+	if(listen(phandle, MAX_CONNECTION) == -1)
+	{
+		//throw
+	}
+	return 1;
+}
+
+int ServerAccept(int phandle, struct sockaddr_in *paddrsock)
+{
+	//
+	int handleService;
+	int taille = sizeof(struct sockaddr_in);
+	if((handleService = accept(phandle, (struct sockaddr *)paddrsock, taille))==-1)
+	{
+		//throw
+	}
+	return handleService;
+}
+
 int ClientInit(void)
 {
 	//

@@ -1,6 +1,9 @@
 #ifndef __SOCKETLIB_H__
 #define __SOCKETLIB_H__
 
+#define	MAX_CONNECTION		(5)
+
+
 int ServerInit(int pport);
 
 int ClientInit(void);
