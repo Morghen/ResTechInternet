@@ -65,6 +65,16 @@ int ServerAccept(int phandle, struct sockaddr_in *paddrsock)
 	return handleService;
 }
 
+int ClientConnect(int phandle, struct sockaddr_in *paddrsock)
+{
+	//
+	int taille = sizeof(struct sockaddr_in);
+	if(connect(phandle, (struct sockaddr *)paddrsock, taille)==-1)
+	{
+		//throw
+	}
+}
+
 int ClientInit(void)
 {
 	//
