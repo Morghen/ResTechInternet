@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <sys/socket.h>
+#include <sys/types.h>
 #include <netinet/in.h>
 #include <netdb.h>
 #include <string.h>
@@ -30,13 +31,13 @@ int ServerInit(int pport)
 	memcpy(&adresseIP, infosHost->h_addr, infosHost->h_length);
 	
 	//prepa struct sockaddr_in
-	memset(&adreseSocket, 0, sizeof(struct sockaddr_in));
+	memset(&adresseSocket, 0, sizeof(struct sockaddr_in));
 	adresseSocket.sin_family = AF_INET;
 	adresseSocket.sin_port = htons(pport);
 	memcpy(&adresseSocket.sin_addr, infosHost->h_addr, infosHost->h_length);
 	
 	//bind
-	if(bind(handleSocket, (struct cockaddr *)&adresseSocket, sizeof(struct sockaddr_in))== -1)
+	if(bind(handleSocket, (struct sockaddr *)&adresseSocket, sizeof(struct sockaddr_in))== -1)
 	{
 		//throw
 	}
@@ -57,8 +58,8 @@ int ServerAccept(int phandle, struct sockaddr_in *paddrsock)
 {
 	//
 	int handleService;
-	int taille = sizeof(struct sockaddr_in);
-	if((handleService = accept(phandle, (struct sockaddr *)paddrsock, taille))==-1)
+	unsigned int taille = sizeof(struct sockaddr_in);
+	if((handleService = accept(phandle, (struct sockaddr *)paddrsock, &taille))==-1)
 	{
 		//throw
 	}
@@ -68,33 +69,36 @@ int ServerAccept(int phandle, struct sockaddr_in *paddrsock)
 int ClientConnect(int phandle, struct sockaddr_in *paddrsock)
 {
 	//
-	int taille = sizeof(struct sockaddr_in);
+	unsigned int taille = sizeof(struct sockaddr_in);
 	if(connect(phandle, (struct sockaddr *)paddrsock, taille)==-1)
 	{
 		//throw
 	}
+	return 1;
 }
 
 int ClientInit(void)
 {
 	//
+	return 1;
 }
 
 int SendMsg(void)
 {
 	//
+	return 1;
 }
 
 int RcvMsg(void)
 {
 	//
-	
+	return 1;
 }
 
 int CloseSocket(int pi)
 {
 	//
-	close(pi);
+	return close(pi);
 }
 
 

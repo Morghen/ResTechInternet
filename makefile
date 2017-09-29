@@ -1,7 +1,7 @@
 .SILENT:
 
 CC = g++ -m64 -DLINUX  -Wall
-OBJS = ServerCheckIn.o libUtils.o socketLib.o
+OBJS = libUtils.o socketLib.o SocketException.o
 PROGRAMS = CheckIn Serveur
 TMP = "default"
 
@@ -11,9 +11,9 @@ ALL:
 	echo ALL ...
 	make ser
 	
-ser: ServerCheckIn.cpp libUtils.o socketLib.o
+ser: ServerCheckIn.cpp $(OBJS)
 	echo Creation ServerCheckIn.o ...
-	$(CC) ServerCheckIn.cpp libUtils.o socketLib.o -o ServerCheckIn -lpthread -lrt -lnsl
+	$(CC) ServerCheckIn.cpp $(OBJS) -o ServerCheckIn -lpthread -lrt -lnsl
 
 libUtils.o: libUtils.cpp libUtils.h
 	echo Creation de libUtils.o ...
@@ -22,6 +22,10 @@ libUtils.o: libUtils.cpp libUtils.h
 socketLib.o: socketLib.cpp socketLib.h
 	echo Creation de socketLib.o ...
 	$(CC) socketLib.cpp -c -o socketLib.o
+	
+SocketException.o: SocketException.cpp SocketException.h
+	echo Creation de SocketException.o ...
+	$(CC) SocketException.cpp -c -o SocketException.o
 
 clean:
 	clear
