@@ -174,6 +174,8 @@ char *receiveSep(int phandle, char *psep)
 	for(i=0; fini == false; i++)
 	{
 		tmpLec = recv(phandle, &(tmpBuf[0]), tailleS, 0);
+		if(tmpLec == -1)
+			throw SocketException("Erreur receive sep");
 		if((isep = checkSep(&(tmpBuf[0]), tmpLec, psep)) >= 0)
 		{
 			fini = true;
