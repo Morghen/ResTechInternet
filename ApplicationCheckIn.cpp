@@ -3,6 +3,7 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <iostream>
+#include <fstream>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <netdb.h>
@@ -31,9 +32,8 @@ int main()
 	{
 	
 		// Connexion au socket toussa toussa
-		
 		//Identify();
-		
+
 		cout << "client socket init"<<endl;
 		handleSocket = ClientInit(PORT, adresseSocket);
 		
@@ -41,7 +41,8 @@ int main()
 		ClientConnect(handleSocket, adresseSocket);
 		
 		cout <<"client connecter !!!!!!"<<endl;
-		
+		// Identification
+		Identify();
 		
 	}
 	catch(SocketException &e)
@@ -59,7 +60,7 @@ int main()
 	free(adresseSocket);
 }
 
-/*void Identify()
+void Identify()
 {
 	// Variables
 	int loopAgain = 1;
@@ -88,21 +89,43 @@ int CheckLoginPassword(char* lg,char* password)
 	// Variables
 	fstream fs;
 	
-	// Ouverture du fichier csv et recherche de la chaine correspondante
+	// Ouverture du fichier csv
 	try
 	{
-		fs.open("officer_list.csv",in);
+		fs.open("officer_list.csv",fstream::in);
+		return 1;
 	}
-	catch(Exception e)
+	catch(exception &e)
 	{
-		e.
+		cout << "Erreur open fichier:" << e.what() << endl;
 	}
 	
-	
-	
-	
+	// Recherche du couple login-password
+	char tmp[100]={0};
+	fs.getline(tmp,100,';');
+	if(strcmp(lg,tmp) == 0)
+	{
+		cout << "Login trouve,recherche mdp" << endl;
+		fs.getline(tmp,100);
+		if(strcmp(password,tmp) == 0)
+		{
+			cout << "Login & password correct" << endl;
+			return 0;
+		}
+		else
+		{
+			cout << "Password incorrect" << endl;
+			return -1;
+		}
+	}
+	else
+	{
+		cout << "Login incorrect" << endl;
+		return -1;
+	}
+		
 }
-*/
+
 
 
 
