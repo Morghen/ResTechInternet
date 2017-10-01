@@ -6,6 +6,7 @@
 #include <fstream>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <netinet/tcp.h>
 #include <netdb.h>
 #include <string.h>
 #include <unistd.h>

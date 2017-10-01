@@ -7,6 +7,7 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <string.h>
+#include <netinet/tcp.h>
 #include <unistd.h>
 #include "SocketException.h"
 #include "socketLib.h"
@@ -167,7 +168,7 @@ char *receiveSep(int phandle, char *psep)
 	tailleO = sizeof(int);
 	int tailleMsg=0;
 	
-	getsockopt(phandle, IPPROTO_TCP, TCP_MAXSEG, &tailleS, &tailleO);
+	getsockopt(phandle, IPPROTO_TCP, TCP_MAXSEG, &tailleS, (socklen_t *)&tailleO);
 	
 	char *buf = (char *)malloc(tailleS*sizeof(char));
 	for(i=0; fini == false; i++)
