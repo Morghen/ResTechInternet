@@ -6,7 +6,7 @@
 
 int ServerInit(int pport);
 
-int ClientInit(void);
+int ClientInit(int pport, struct sockaddr_in *adresseSocket);
 
 int SendMsg(void);
 

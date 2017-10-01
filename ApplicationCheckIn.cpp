@@ -1,10 +1,21 @@
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include <sys/socket.h>
+#include <sys/types.h>
 #include <iostream>
-#include <exception>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <netdb.h>
+#include <string.h>
+#include <unistd.h>
+#include "libUtils.h"
+#include "socketLib.h"
+#include "SocketException.h"
+
+using namespace std;
 
 
-
+#define	PORT	50001
 
 void Identify();
 int CheckLoginPassword(char* login,char* password);
@@ -14,14 +25,37 @@ int CheckLoginPassword(char* login,char* password);
 
 int main()
 {
-	// Connexion au socket toussa toussa
-	Identify();
-
-
-
+	try
+	{
+	
+		// Connexion au socket toussa toussa
+		int handleSocket;
+		//Identify();
+		struct sockaddr_in *adresseSocket = (sockaddr_in *) malloc(sizeof(struct sockaddr_in));
+	
+		cout << "client socket init"<<endl;
+		handleSocket = ClientInit(PORT, adresseSocket);
+		
+		cout << "client connect"<<endl;
+		ClientConnect(handleSocket, adresseSocket);
+		
+		cout <<"client connecter !!!!!!"<<endl;
+		
+		
+	}
+	catch(SocketException &e)
+	{
+		cout <<"Erreur socket : " << e.getMsg() << " n° : " << e.getNbrErr()<<endl;
+	}
+	catch(...)
+	{
+		cout << "Erreur inconnue "<< endl;
+		perror(" t");
+		exit(0);
+	}
 }
 
-void Identify()
+/*void Identify()
 {
 	// Variables
 	int loopAgain = 1;
@@ -64,7 +98,7 @@ int CheckLoginPassword(char* lg,char* password)
 	
 	
 }
-
+*/
 
 
 

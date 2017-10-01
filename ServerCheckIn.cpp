@@ -1,7 +1,13 @@
-#include <stdio.h>
 #include <stdlib.h>
-#include <pthread.h>
+#include <stdio.h>
+#include <sys/socket.h>
+#include <sys/types.h>
 #include <iostream>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <netdb.h>
+#include <string.h>
+#include <unistd.h>
 #include "libUtils.h"
 #include "socketLib.h"
 #include "SocketException.h"

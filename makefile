@@ -10,10 +10,15 @@ ALL:
 	clear
 	echo ALL ...
 	make ser
+	make cli
 	
 ser: ServerCheckIn.cpp $(OBJS)
 	echo Creation ServerCheckIn.o ...
 	$(CC) ServerCheckIn.cpp $(OBJS) -o ServerCheckIn -lpthread -lrt -lnsl
+	
+cli: ApplicationCheckIn.cpp $(OBJS)
+	echo Creation app client
+	$(CC) ApplicationCheckIn.cpp $(OBJS) -o ApplicationChekIn -lpthread -lrt -lnsl
 
 libUtils.o: libUtils.cpp libUtils.h
 	echo Creation de libUtils.o ...
