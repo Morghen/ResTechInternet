@@ -6,6 +6,15 @@
 
 using namespace std;
 
+/*
+ERRORINIT			=		1;
+ERRORCONNECT		=		2;
+ERRORLISTEN			=		3;
+ERRORACCEPT			=		4;
+ERRORMSGRCV			=		5;
+ERRORMSGSEND		=		6;
+*/
+
 SocketException::SocketException(const SocketException &tmp)
 {
 	msg = NULL;
