@@ -3,6 +3,7 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <iostream>
+#include <fstream>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <netdb.h>
@@ -30,7 +31,7 @@ int main()
 	
 		// Connexion au socket toussa toussa
 		int handleSocket;
-		//Identify();
+		
 		struct sockaddr_in *adresseSocket = (sockaddr_in *) malloc(sizeof(struct sockaddr_in));
 	
 		cout << "client socket init"<<endl;
@@ -40,7 +41,8 @@ int main()
 		ClientConnect(handleSocket, adresseSocket);
 		
 		cout <<"client connecter !!!!!!"<<endl;
-		
+		// Identification
+		Identify();
 		
 	}
 	catch(SocketException &e)
@@ -56,7 +58,7 @@ int main()
 	}
 }
 
-/*void Identify()
+void Identify()
 {
 	// Variables
 	int loopAgain = 1;
@@ -88,18 +90,15 @@ int CheckLoginPassword(char* lg,char* password)
 	// Ouverture du fichier csv et recherche de la chaine correspondante
 	try
 	{
-		fs.open("officer_list.csv",in);
+		fs.open("officer_list.csv",fstream::in);
+		return 1;
 	}
-	catch(Exception e)
+	catch(exception &e)
 	{
-		e.
-	}
-	
-	
-	
-	
+		cout << "Erreur open fichier:" << e.what() << endl;
+	}	
 }
-*/
+
 
 
 
