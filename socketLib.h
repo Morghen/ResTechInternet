@@ -41,6 +41,4 @@ int ClientConnect(int phandle, struct sockaddr_in *paddrsock);
 
 
 
-
-
 #endif

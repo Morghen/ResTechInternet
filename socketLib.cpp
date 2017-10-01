@@ -128,16 +128,33 @@ int ClientInit(int pport, struct sockaddr_in *adresseSocket)
 	return handleSocket;
 }
 
-int SendMsg(void)
+int SendMsg(int phandle )
 {
 	//
 	return 1;
 }
 
-int RcvMsg(void)
+int receiveSize(int phandle, int psize, void *pbuf)
 {
 	//
-	return 1;
+	int tmpLec=0;
+	int i;
+	char *buf = (char *)malloc(psize*sizeof(char));
+	for(i=0; i<psize; i += tmpLec)
+	{
+		tmpLec = recv(phandle, &(buf[i]), psize-i, 0);
+	}
+	if(i != psize)
+		throw SocketException("Error receive size too short");
+	memcpy(pbuf, buf, sizeof(psize));
+	free(buf);
+	return i;
+}
+
+char *receiveSep(char *psep)
+{
+	//
+	return NULL;
 }
 
 int CloseSocket(int pi)

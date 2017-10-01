@@ -1,0 +1,6 @@
+ApplicationCheckIn
+ServerCheckIn
+*.o
+*.c~
+*.h~
+makefile~
