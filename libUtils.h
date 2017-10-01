@@ -6,14 +6,9 @@ int waitTime(int sec, long nsec);
 
 int checkSep(char *pbuf, int psize, char *psep);
 
+void Identify();
 
-
-
-
-
-
-
-
+int CheckLoginPassword(char* login,char* password);
 
 
 

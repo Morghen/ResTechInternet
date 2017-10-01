@@ -60,7 +60,7 @@ int main()
 	free(adresseSocket);
 }
 
-void Identify()
+/*void Identify()
 {
 	// Variables
 	int loopAgain = 1;
@@ -72,9 +72,8 @@ void Identify()
 		cout << "Login : ";
 		cin >> login;
 		cout << "Mot de passe : ";
-		cin >> password;
-		//Fct qui check le login-mdp (renvoie 0 si OK, renvoie -1 si erreur)
-		if(CheckLoginPassword(login,password) == -1)
+		cin >> password;	
+		if(CheckLoginPassword(login,password) == -1)	//Fct qui check le login-mdp (renvoie 0 si OK, renvoie -1 si erreur)
 			cout << "Compte inconnu, verifiez votre login/mot de passe" << endl;
 		else
 		{
@@ -88,6 +87,7 @@ int CheckLoginPassword(char* lg,char* password)
 {
 	// Variables
 	fstream fs;
+	char tmp[100]={0};
 	
 	// Ouverture du fichier csv
 	try
@@ -99,32 +99,41 @@ int CheckLoginPassword(char* lg,char* password)
 		cout << "Erreur open fichier:" << e.what() << endl;
 	}
 	
-	// Recherche du couple login-password
-	char tmp[100]={0};
-	fs.getline(tmp,100,';');
-	if(strcmp(lg,tmp) == 0)
+	// Recherche du couple login-password	
+	while(fs.peek() != EOF) // Recherche tant que EOF n'est pas atteint
 	{
-		cout << "Login trouve,recherche mdp" << endl;
-		fs.getline(tmp,100);
-		if(strcmp(password,tmp) == 0)
+		fs.getline(tmp,100,';');
+		cout << "Comparaison lg & tmp :" << lg << " & " << tmp << endl;
+		if(strcmp(lg,tmp) == 0)
 		{
-			cout << "Login & password correct" << endl;
-			return 0;
+			cout << "Login trouve,recherche mdp" << endl;
+			fs.getline(tmp,100);
+			cout << "Comparaison password & tmp :" << password << " & " << tmp << endl;
+			if(strcmp(password,tmp) == 0)
+			{
+				cout << "Login & password correct" << endl;
+				fs.close();
+				return 0;
+			}
+			else
+			{
+				cout << "Password incorrect" << endl;
+				fs.close();
+				return -1;
+			}
 		}
 		else
 		{
-			cout << "Password incorrect" << endl;
-			return -1;
+			cout << "Login incorrect" << endl;
+			fs.getline(tmp,100); // On passe le password
 		}
 	}
-	else
-	{
-		cout << "Login incorrect" << endl;
-		return -1;
-	}
+	cout << "Fin fichier atteint, aucune correspondance" << endl;
+	fs.close();
+	return -1;
 		
 }
-
+*/
 
 
 
