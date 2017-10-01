@@ -16,6 +16,8 @@
 
 using namespace std;
 
+void BilletsManager();
+
 
 #define	PORT	50000
 
@@ -61,7 +63,7 @@ int main()
 		{
 			case '1':
 				Identify();	// Identification
-				// Suite de menus
+				BilletsManager();	// Gestion des billets
 				break;
 			default:
 				exit(0);			
@@ -73,7 +75,27 @@ int main()
 	free(adresseSocket);
 }
 
-
+void BilletsManager()
+{
+	char choix;
+	cout << "*** Gestions des billets ***" << endl;
+	cout << "1. Ajouter un billet" << endl;
+	cout << "2. Changer de compte" << endl;
+	cout << "3. Quitter" << endl;
+	cout << "Votre choix : ";
+	cin >> choix;
+	switch(choix)
+	{
+		case '1':
+			//AddBillet(); // Ajout d'un billets
+			break;
+		case '2':
+			return;
+		default:
+			exit(0);			
+	}
+	
+}
 
 
 
