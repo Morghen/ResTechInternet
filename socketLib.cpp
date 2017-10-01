@@ -10,9 +10,11 @@
 #include <unistd.h>
 #include "SocketException.h"
 #include "socketLib.h"
+#include "libUtils.h"
 
 using namespace std;
 
+#define TAILLELECSEP (10)
 
 int ServerInit(int pport)
 {
@@ -134,7 +136,7 @@ int SendMsg(int phandle )
 	return 1;
 }
 
-int receiveSize(int phandle, int psize, void *pbuf)
+char *receiveSize(int phandle, int psize)
 {
 	//
 	int tmpLec=0;
@@ -143,18 +145,48 @@ int receiveSize(int phandle, int psize, void *pbuf)
 	for(i=0; i<psize; i += tmpLec)
 	{
 		tmpLec = recv(phandle, &(buf[i]), psize-i, 0);
+		if(tmpLec == -1)
+			throw SocketException("Error receive size too short");
 	}
 	if(i != psize)
 		throw SocketException("Error receive size too short");
-	memcpy(pbuf, buf, sizeof(psize));
-	free(buf);
-	return i;
+	//memcpy(pbuf, buf, sizeof(psize));
+	//free(buf);
+	return buf;
 }
 
-char *receiveSep(char *psep)
+char *receiveSep(int phandle, char *psep)
 {
 	//
-	return NULL;
+	int tmpLec=0;
+	int i, isep=0;
+
+	char tmpBuf[5500] = {0};
+	bool fini = false;
+	int tailleS, tailleO;
+	tailleO = sizeof(int);
+	int tailleMsg=0;
+	
+	getsockopt(phandle, IPPROTO_TCP, TCP_MAXSEG, &tailleS, &tailleO);
+	
+	char *buf = (char *)malloc(tailleS*sizeof(char));
+	for(i=0; fini == false; i++)
+	{
+		tmpLec = recv(phandle, &(tmpBuf[0]), tailleS, 0);
+		if((isep = checkSep(&(tmpBuf[0]), tmpLec, psep)) >= 0)
+		{
+			fini = true;
+		}
+		else
+		{
+			buf = (char *) realloc(buf, tailleS * (i+2) * sizeof(char));
+		}
+		
+		memcpy(&(buf[tailleMsg]), &tmpBuf, tmpLec);
+		tailleMsg += tmpLec;
+	}
+	
+	return buf;
 }
 
 int CloseSocket(int pi)

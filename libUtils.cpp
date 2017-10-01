@@ -4,6 +4,7 @@
 #include <time.h>
 #include <limits.h>
 #include <iostream>
+#include <string.h>
 
 using namespace std;
 
@@ -22,8 +23,19 @@ int waitTime(int sec, long nsec)
 	return nanosleep(&time, NULL);
 }
 
-
-
+int checkSep(char *pbuf, int psize, char *psep)
+{
+	int i,j;
+	for(i=0; i <psize; i++)
+	{
+		for(j=0; j<strlen(psep); j++)
+		{
+			if(pbuf[i] == psep[j])
+				return i;
+		}
+	}
+	return -1;
+}
 
 
 

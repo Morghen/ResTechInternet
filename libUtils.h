@@ -4,7 +4,7 @@
 
 int waitTime(int sec, long nsec);
 
-
+int checkSep(char *pbuf, int psize, char *psep);
 
 
 
