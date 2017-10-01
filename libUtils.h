@@ -4,13 +4,9 @@
 
 int waitTime(int sec, long nsec);
 
+void Identify();
 
-
-
-
-
-
-
+int CheckLoginPassword(char* login,char* password);
 
 
 

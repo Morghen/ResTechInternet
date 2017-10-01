@@ -60,7 +60,7 @@ int main()
 	free(adresseSocket);
 }
 
-void Identify()
+/*void Identify()
 {
 	// Variables
 	int loopAgain = 1;
@@ -133,7 +133,7 @@ int CheckLoginPassword(char* lg,char* password)
 	return -1;
 		
 }
-
+*/
 
 
 
