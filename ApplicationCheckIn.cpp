@@ -72,7 +72,7 @@ void Identify()
 		cout << "Mot de passe : ";
 		cin >> password;
 		//Fct qui check le login-mdp (renvoie 0 si OK, renvoie -1 si erreur)
-		if(CheckLoginPassword(login,password)==-1)
+		if(CheckLoginPassword(login,password) == -1)
 			cout << "Compte inconnu, verifiez votre login/mot de passe" << endl;
 		else
 		{
@@ -91,7 +91,6 @@ int CheckLoginPassword(char* lg,char* password)
 	try
 	{
 		fs.open("officer_list.csv",fstream::in);
-		return 1;
 	}
 	catch(exception &e)
 	{
