@@ -2,13 +2,9 @@
 #include <iostream>
 #include <string.h>
 #include <exception>
-
 #include "SocketException.h"
 
 using namespace std;
-
-
-
 
 SocketException::SocketException(const SocketException &tmp)
 {
