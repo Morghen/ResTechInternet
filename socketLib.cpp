@@ -137,6 +137,21 @@ int SendMsg(int phandle )
 	return 1;
 }
 
+int sendSize(int phandle, char *pbuf, int psize)
+{
+	//
+	int tmpLec=0;
+	int i;
+
+	tmpLec = send(phandle, pbuf, psize, 0);
+	if(tmpLec == -1)
+		throw SocketException("Error receive size too short");
+
+	//memcpy(pbuf, buf, sizeof(psize));
+	//free(buf);
+	return tmpLec;
+}
+
 char *receiveSize(int phandle, int psize)
 {
 	//

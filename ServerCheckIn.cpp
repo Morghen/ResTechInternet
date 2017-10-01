@@ -20,6 +20,7 @@ using namespace std;
 
 #define	NB_THREADS	5
 #define	PORT			(50000)
+#define MAXSTRING		(500)
 
 
 pthread_t ThreadId[NB_THREADS] = {0};
@@ -38,6 +39,7 @@ int main()
 {
 	int handleServer;
 	int handleTmp;
+	int i;
 	struct sockaddr_in *paddrsock=NULL;
 	try
 	{
@@ -45,8 +47,8 @@ int main()
 		pthread_cond_init(&condHandle, NULL);
 		cout << "Demarrage serveur" << endl;
 		cout << "Demarrage pool de threads" << endl;
-		for(int i=0;i<NB_THREADS;i++)
-			pthread_create(&ThreadId[i],NULL,ThClient,NULL);
+		for(int j=0;j<NB_THREADS;j++)
+			pthread_create(&ThreadId[j],NULL,ThClient,NULL);
 		cout << "Fin creation threads" << endl;
 		
 		//creation socket et handle avec bind
@@ -63,15 +65,24 @@ int main()
 			
 			//donner le handleTmp à un thread
 			pthread_mutex_lock(&mutexHandle);
-			for(int i=0; i < NB_THREADS; i++)
+	
+			for(i=0; i < NB_THREADS; i++)
 			{
-				if(handleService[i]!= 0 )
+				if(handleService[i]== 0 )
 				{
 					handleService[i] = handleTmp;
+					nbHandleWait++;
+					i = NB_THREADS +1;
 				}
 			}
 			pthread_mutex_unlock(&mutexHandle);
+			pthread_cond_signal(&condHandle);
 			
+			if(i == NB_THREADS)
+			{
+				//répondre qu'on ne peut pas le prendre
+				close(handleTmp);
+			}
 		}
 		
 		
@@ -96,7 +107,37 @@ int main()
 void *ThClient(void *)
 {
 	cout << "Thread : " << pthread_self() << " lance" << endl;
-	waitTime(5,0);
+	int handleS;char *bufMsg;
+	char bufMsgSend[MAXSTRING] = {0};
+	pthread_mutex_lock(&mutexHandle);
+	
+	while(nbHandleWait == 0)
+		pthread_cond_wait(&condHandle,&mutexHandle);
+	
+	for(int i=0; i<NB_THREADS; i++)
+	{
+		if(handleService[i] != 0)
+		{
+			handleS = handleService[i];
+			handleService[i] = 0;
+		}
+	}
+	pthread_mutex_unlock(&mutexHandle);
+	cout << "recup handle"<<endl;
+	while(1)
+	{
+		//
+		
+		bufMsg = receiveSize(handleS, MAXSTRING);
+		bufMsg[MAXSTRING-1]='\0';
+		cout<< "Serv "<<pthread_self()<<" received : "<<bufMsg<<endl;
+		
+		sprintf(bufMsgSend, "ACK serv : %s", bufMsg);
+		
+		sendSize(handleS, bufMsgSend, MAXSTRING);
+		cout<< "Serv "<<pthread_self()<<" sended : "<<bufMsgSend<<endl;
+		free(bufMsg);
+	}
 	cout << pthread_self() << " je meurs" << endl;
 	pthread_exit(0);
 }

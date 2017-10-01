@@ -14,6 +14,8 @@
 #include "socketLib.h"
 #include "SocketException.h"
 
+#define MAXSTRING		(500)
+
 using namespace std;
 
 void BilletsManager();
@@ -28,6 +30,9 @@ int main()
 	struct sockaddr_in *adresseSocket = (sockaddr_in *) malloc(sizeof(struct sockaddr_in));
 	int handleSocket;
 	// Init et ouverture des sockets
+	char *bufMsgReceive;
+	char bufMsgSend[MAXSTRING] = {0};
+	
 	try
 	{
 
@@ -38,6 +43,18 @@ int main()
 		ClientConnect(handleSocket, adresseSocket);
 		
 		cout <<"client connecter !!!!!!"<<endl;	
+		
+		for(int i=0; i< 5; i++)
+		{
+			sprintf(bufMsgSend, "message n°%d sur 5",i);
+			sendSize(handleSocket, bufMsgSend, MAXSTRING);
+			cout << "client sended: "<<bufMsgSend<<endl;
+			
+			bufMsgReceive = receiveSize(handleSocket, MAXSTRING);
+			cout << "client receive: "<<bufMsgReceive<<endl;
+			free(bufMsgReceive);
+		}
+		
 	}
 	catch(SocketException &e)
 	{

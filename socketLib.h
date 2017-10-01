@@ -20,10 +20,10 @@ int ServerAccept(int phandle, struct sockaddr_in *paddrsock);
 
 int ClientConnect(int phandle, struct sockaddr_in *paddrsock);
 
+int sendSize(int phandle, char *pbuf, int psize);
 
 
-
-
+char *receiveSize(int phandle, int psize);
 
 
 
