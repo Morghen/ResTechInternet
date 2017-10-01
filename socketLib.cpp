@@ -21,12 +21,14 @@ int ServerInit(int pport)
 	if((handleSocket = socket(AF_INET,SOCK_STREAM,IPPROTO_TCP))==-1)
 	{
 		// throw
+		throw SocketException("Erreur handleSocket");
 	}
 	
 	//acquisition info ordi
 	if((infosHost = gethostbyname(""))==0)
 	{
 		//throw
+		throw SocketException("Erreur infosHost");
 	}
 	memcpy(&adresseIP, infosHost->h_addr, infosHost->h_length);
 	
@@ -40,6 +42,7 @@ int ServerInit(int pport)
 	if(bind(handleSocket, (struct sockaddr *)&adresseSocket, sizeof(struct sockaddr_in))== -1)
 	{
 		//throw
+		throw SocketException("Erreur bind");
 	}
 	return handleSocket;
 }
@@ -50,6 +53,7 @@ int ServerListen(int phandle)
 	if(listen(phandle, MAX_CONNECTION) == -1)
 	{
 		//throw
+		throw SocketException("Erreur listen");
 	}
 	return 1;
 }
@@ -62,6 +66,7 @@ int ServerAccept(int phandle, struct sockaddr_in *paddrsock)
 	if((handleService = accept(phandle, (struct sockaddr *)paddrsock, &taille))==-1)
 	{
 		//throw
+		throw SocketException("Erreur accept");
 	}
 	return handleService;
 }
@@ -73,6 +78,7 @@ int ClientConnect(int phandle, struct sockaddr_in *paddrsock)
 	if(connect(phandle, (struct sockaddr *)paddrsock, taille)==-1)
 	{
 		//throw
+		throw SocketException("Erreur connect");
 	}
 	return 1;
 }
