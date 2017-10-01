@@ -18,17 +18,17 @@ class SocketException : public exception
 		
 	public:
 		//init
-		explicit SocketException()
+		SocketException()
 		{msg = NULL; nbrErr=0;};
-		explicit SocketException(const char *tmp)
+		SocketException(const char *tmp)
 		{msg = NULL; nbrErr=0; setMsg(tmp);};
 		
-		explicit SocketException(const char *tmp, int n)
+		SocketException(const char *tmp, int n)
 		{msg = NULL; nbrErr=0; setMsg(tmp); setNbrErr(n);};
 		
-		explicit SocketException(int n);
+		SocketException(int n);
 		
-		explicit SocketException(const SocketException &tmp);
+		SocketException(const SocketException &tmp);
 		
 		~SocketException() throw();
 		

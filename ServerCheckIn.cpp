@@ -4,26 +4,65 @@
 #include <iostream>
 #include "libUtils.h"
 #include "socketLib.h"
+#include "SocketException.h"
 
 
 
 using namespace std;
 
-#define NB_THREADS 5
+#define	NB_THREADS	5
+#define	PORT			(50000)
 
 pthread_t ThreadId[NB_THREADS] = {0};
+
+
+int hancleService[NB_THREADS] = {0};
 
 void *ThClient(void *);
 
 int main()
 {
-	cout << "Demarrage serveur" << endl;
-	cout << "Demarrage pool de threads" << endl;
-	for(int i=0;i<NB_THREADS;i++)
-		pthread_create(&ThreadId[i],NULL,ThClient,NULL);
-	cout << "Fin creation threads" << endl;
-	waitTime(20,0);
-	cout << "Fin serveur" << endl;
+	int handleServer;
+	int handleTmp;
+	struct sockaddr_in *paddrsock=NULL;
+	try
+	{
+		cout << "Demarrage serveur" << endl;
+		cout << "Demarrage pool de threads" << endl;
+		for(int i=0;i<NB_THREADS;i++)
+			pthread_create(&ThreadId[i],NULL,ThClient,NULL);
+		cout << "Fin creation threads" << endl;
+		
+		//creation socket et handle avec bind
+		handleServer = ServerInit(PORT);
+		
+		while(1)
+		{
+			cout <<"listen"<<endl;
+			ServerListen(handleServer);
+			
+			cout << "accept"<<endl;
+			handleTmp = ServerAccept(handleServer, paddrsock);
+			cout << "client accepter"<<endl;
+		}
+		
+		
+		
+		waitTime(20,0);
+	
+	
+		cout << "Fin serveur" << endl;
+	}
+	catch(SocketException &e)
+	{
+		cout <<"Erreur socket : " << e.getMsg() << " n° : " << e.getNbrErr()<<endl;
+	}
+	catch(...)
+	{
+		cout << "Erreur inconnue "<< endl;
+		perror(" t");
+		exit(0);
+	}
 }
 
 void *ThClient(void *)

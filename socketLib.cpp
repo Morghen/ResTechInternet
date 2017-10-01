@@ -2,12 +2,16 @@
 #include <stdio.h>
 #include <sys/socket.h>
 #include <sys/types.h>
+#include <iostream>
 #include <netinet/in.h>
+#include <arpa/inet.h>
 #include <netdb.h>
 #include <string.h>
 #include <unistd.h>
 #include "SocketException.h"
 #include "socketLib.h"
+
+using namespace std;
 
 
 int ServerInit(int pport)
@@ -26,18 +30,22 @@ int ServerInit(int pport)
 	}
 	
 	//acquisition info ordi
-	if((infosHost = gethostbyname(""))==0)
+	if((infosHost = gethostbyname("localhost"))==0)
 	{
 		//throw
 		throw SocketException(SocketException::ERRORINIT);
 	}
 	memcpy(&adresseIP, infosHost->h_addr, infosHost->h_length);
 	
+	
+	
 	//prepa struct sockaddr_in
 	memset(&adresseSocket, 0, sizeof(struct sockaddr_in));
 	adresseSocket.sin_family = AF_INET;
 	adresseSocket.sin_port = htons(pport);
 	memcpy(&adresseSocket.sin_addr, infosHost->h_addr, infosHost->h_length);
+	
+	cout << inet_ntoa(adresseIP)<<":"<<pport<<endl;
 	
 	//bind
 	if(bind(handleSocket, (struct sockaddr *)&adresseSocket, sizeof(struct sockaddr_in))== -1)
@@ -67,7 +75,7 @@ int ServerAccept(int phandle, struct sockaddr_in *paddrsock)
 	if((handleService = accept(phandle, (struct sockaddr *)paddrsock, &taille))==-1)
 	{
 		//throw
-		throw SocketException(ERRORACCEPT);
+		throw SocketException(SocketException::ERRORACCEPT);
 	}
 	return handleService;
 }
@@ -79,7 +87,7 @@ int ClientConnect(int phandle, struct sockaddr_in *paddrsock)
 	if(connect(phandle, (struct sockaddr *)paddrsock, taille)==-1)
 	{
 		//throw
-		throw SocketException(ERRORCONNECT);
+		throw SocketException(SocketException::ERRORCONNECT);
 	}
 	return 1;
 }

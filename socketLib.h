@@ -14,7 +14,11 @@ int RcvMsg(void);
 
 int CloseSocket(int pi);
 
+int ServerListen(int phandle);
 
+int ServerAccept(int phandle, struct sockaddr_in *paddrsock);
+
+int ClientConnect(int phandle, struct sockaddr_in *paddrsock);
 
 
 
