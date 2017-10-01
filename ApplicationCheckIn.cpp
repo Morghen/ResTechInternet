@@ -87,7 +87,7 @@ int CheckLoginPassword(char* lg,char* password)
 	// Variables
 	fstream fs;
 	
-	// Ouverture du fichier csv et recherche de la chaine correspondante
+	// Ouverture du fichier csv
 	try
 	{
 		fs.open("officer_list.csv",fstream::in);
@@ -96,7 +96,32 @@ int CheckLoginPassword(char* lg,char* password)
 	catch(exception &e)
 	{
 		cout << "Erreur open fichier:" << e.what() << endl;
-	}	
+	}
+	
+	// Recherche du couple login-password
+	char tmp[100]={0};
+	fs.getline(tmp,100,';');
+	if(strcmp(lg,tmp) == 0)
+	{
+		cout << "Login trouve,recherche mdp" << endl;
+		fs.getline(tmp,100);
+		if(strcmp(password,tmp) == 0)
+		{
+			cout << "Login & password correct" << endl;
+			return 0;
+		}
+		else
+		{
+			cout << "Password incorrect" << endl;
+			return -1;
+		}
+	}
+	else
+	{
+		cout << "Login incorrect" << endl;
+		return -1;
+	}
+		
 }
 
 
