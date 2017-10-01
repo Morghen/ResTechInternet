@@ -2,8 +2,9 @@
 
 CC = g++ -m64 -DLINUX  -Wall
 OBJS = libUtils.o socketLib.o SocketException.o
-PROGRAMS = CheckIn Serveur
+PROGRAMS = ApplicationCheckIn ServerChekIn
 TMP = "default"
+
 
 ALL:
 	clear
@@ -18,7 +19,7 @@ ser: ServerCheckIn.cpp $(OBJS)
 	
 cli: ApplicationCheckIn.cpp $(OBJS)
 	echo Creation app client
-	$(CC) ApplicationCheckIn.cpp $(OBJS) -o ApplicationChekIn -lpthread -lrt -lnsl
+	$(CC) ApplicationCheckIn.cpp $(OBJS) -o ApplicationCheckIn -lpthread -lrt -lnsl
 
 libUtils.o: libUtils.cpp libUtils.h
 	echo Creation de libUtils.o ...
@@ -36,7 +37,7 @@ clean:
 	clear
 	clear
 	echo Clean ...
-	rm -f $(OBJS) core
+	rm -f *.o ApplicationCheckIn ServerCheckIn
 
 clobber:	clean
 	clear
