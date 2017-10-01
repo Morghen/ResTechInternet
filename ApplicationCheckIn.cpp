@@ -15,7 +15,7 @@
 using namespace std;
 
 
-#define	PORT	50001
+#define	PORT	50000
 
 void Identify();
 int CheckLoginPassword(char* login,char* password);
@@ -46,6 +46,7 @@ int main()
 	catch(SocketException &e)
 	{
 		cout <<"Erreur socket : " << e.getMsg() << " n° : " << e.getNbrErr()<<endl;
+		perror(" ");
 	}
 	catch(...)
 	{

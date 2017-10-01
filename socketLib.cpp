@@ -121,7 +121,7 @@ int ClientInit(int pport, struct sockaddr_in *adresseSocket)
 	memset(adresseSocket, 0, sizeof(struct sockaddr_in));
 	adresseSocket->sin_family = AF_INET;
 	adresseSocket->sin_port = htons(pport);
-	memcpy(&adresseSocket->sin_addr, infosHost->h_addr, infosHost->h_length);
+	memcpy(&(adresseSocket->sin_addr), infosHost->h_addr, infosHost->h_length);
 	
 	cout << "clien: "<<inet_ntoa(adresseIP)<<":"<<pport<<endl;
 	
