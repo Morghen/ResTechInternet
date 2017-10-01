@@ -1,11 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <errno.h>
-#include <unistd.h>
+#include <exception>
 
 
 
@@ -52,13 +48,16 @@ void Identify()
 int CheckLoginPassword(char* lg,char* password)
 {
 	// Variables
-	int fd = 0;
+	fstream fs;
 	
 	// Ouverture du fichier csv et recherche de la chaine correspondante
-	if((fd = open("officer_list.csv",O_RDONLY)) == -1)
+	try
 	{
-		perror("Erreur fichier :");
-		exit(-1);
+		fs.open("officer_list.csv",in);
+	}
+	catch(Exception e)
+	{
+		e.
 	}
 	
 	
