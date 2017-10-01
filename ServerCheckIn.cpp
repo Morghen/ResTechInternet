@@ -69,6 +69,7 @@ int main()
 		perror(" t");
 		exit(0);
 	}
+	close(handleServer);
 }
 
 void *ThClient(void *)

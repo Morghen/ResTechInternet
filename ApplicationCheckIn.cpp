@@ -25,14 +25,15 @@ int CheckLoginPassword(char* login,char* password);
 
 int main()
 {
+	struct sockaddr_in *adresseSocket = (sockaddr_in *) malloc(sizeof(struct sockaddr_in));
+	int handleSocket;
 	try
 	{
 	
 		// Connexion au socket toussa toussa
-		int handleSocket;
+		
 		//Identify();
-		struct sockaddr_in *adresseSocket = (sockaddr_in *) malloc(sizeof(struct sockaddr_in));
-	
+		
 		cout << "client socket init"<<endl;
 		handleSocket = ClientInit(PORT, adresseSocket);
 		
@@ -54,6 +55,8 @@ int main()
 		perror(" t");
 		exit(0);
 	}
+	close(handleSocket);
+	free(adresseSocket);
 }
 
 /*void Identify()
