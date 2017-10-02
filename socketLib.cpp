@@ -17,6 +17,17 @@ using namespace std;
 
 #define TAILLELECSEP (10)
 
+typedef enum TypeRequete 
+{
+   Connect = 1,
+	Deconnect,
+	Ack,
+	CheckTicket,
+	CheckLuggage,
+	PayementDone,
+}TypeRequete;
+
+
 int ServerInit(int pport)
 {
 	//
@@ -141,11 +152,10 @@ int sendSize(int phandle, char *pbuf, int psize)
 {
 	//
 	int tmpLec=0;
-	int i;
 
 	tmpLec = send(phandle, pbuf, psize, 0);
 	if(tmpLec == -1)
-		throw SocketException("Error receive size too short");
+		throw SocketException("Error send size too short");
 
 	//memcpy(pbuf, buf, sizeof(psize));
 	//free(buf);
