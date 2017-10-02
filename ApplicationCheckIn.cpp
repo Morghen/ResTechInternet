@@ -161,6 +161,7 @@ void AddBillet()
 	}
 	//Fin encodage données & fermeture fichier
 	fichiercsv.close();
+	// Envoie requete CHECK_LUGGAGE et recupere tous les calculs
 	cout << "*** Résumé du billet ***" << endl;
 	cout << "Numéro du billet : " << numBillet << endl;
 	cout << "Nombre d'accompagnants : " << nbVoyageurs << endl;
@@ -169,7 +170,7 @@ void AddBillet()
 	cout << "Supplément à payer : " << getAddedTaxes(getExcessWeight(poidsBagages)) << " EUR" << endl;
 	cout << "Paiement effectué ? ";
 	cin.ignore();
-	cin >> paiementOK;
+	cin >> paiementOK; // Envoie requete PAYMENT_DONE
 }
 
 */
