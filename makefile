@@ -20,10 +20,6 @@ ser: ServerCheckIn.cpp $(OBJS)
 cli: ApplicationCheckIn.cpp $(OBJS)
 	echo Creation app client
 	$(CC) ApplicationCheckIn.cpp $(OBJS) -o ApplicationCheckIn -lpthread -lrt -lnsl
-	
-Billet.o: Billet.cpp	Billet.h
-	echo Creation de Billet.o
-	$(CC) Billet.cpp -c -o Billet.o
 
 libUtils.o: libUtils.cpp libUtils.h
 	echo Creation de libUtils.o ...

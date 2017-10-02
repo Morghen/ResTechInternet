@@ -118,10 +118,21 @@ void BilletsManager()
 
 void AddBillet()
 {
-	Billet newBillet();
+	// Variables
+	char numBillet[100];
+	int nbVoyageur=0;
+	float poidsBagages[20];
+	// Encodage des données
 	cout << "*** VOL 757 POWDER-AIRLINES - Kaboul 14h30 ***" << endl;
 	cout << "Numéro de billet ?";
-	
+	cin >> numBillet;
+	cout << "Nombre d'accompagnants ?";
+	cin >> nbVoyageur;
+	for(int i=0;i<20;i++)
+	{
+		cout << "Poids du bagage n°" << i+1 << " <Enter si fini>:";
+		cin >> poidsBagages
+	}
 }
 
 
