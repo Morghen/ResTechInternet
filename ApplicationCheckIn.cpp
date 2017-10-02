@@ -13,7 +13,6 @@
 #include "libUtils.h"
 #include "socketLib.h"
 #include "SocketException.h"
-#include "Billets.h"
 
 #define MAXSTRING		(500)
 
@@ -106,7 +105,7 @@ void BilletsManager()
 	switch(choix)
 	{
 		case '1':
-			AddBillet(); // Ajout d'un billets
+			AddBillet(); // Ajout d'un billet
 			break;
 		case '2':
 			return;
@@ -119,20 +118,48 @@ void BilletsManager()
 void AddBillet()
 {
 	// Variables
+	fstream fichiercsv;
 	char numBillet[100];
-	int nbVoyageur=0;
+	int nbVoyageurs=0;
 	float poidsBagages[20];
+	char typeBagage[20];
+	char paiementOK;
 	// Encodage des données
 	cout << "*** VOL 757 POWDER-AIRLINES - Kaboul 14h30 ***" << endl;
 	cout << "Numéro de billet ?";
 	cin >> numBillet;
+	// Creation et ouverture du fichiercsv
+	try
+	{
+		fs.open(numBillet << "_lug.csv",fstream::out);
+	}
+	catch(exception &e)
+	{
+		cout << "Erreur creation du fichier lug.csv" << endl;
+	}
 	cout << "Nombre d'accompagnants ?";
 	cin >> nbVoyageur;
 	for(int i=0;i<20;i++)
 	{
-		cout << "Poids du bagage n°" << i+1 << " <Enter si fini>:";
-		cin >> poidsBagages
+		cout << "Poids du bagage n°" << i+1 << " <Enter si fini>: ";
+		cin >> poidsBagages[i];
+		if(poidsBagages[i] == '\n')
+			break;
+		cout << "Valise ? ";
+		cin >> typeBagage[i];
+		if(typeBagage[i] == 'O' || typeBagage[i] == 'o')
+			fs << numBillet << "-1430-00" << i << ";" << "VALISE\n";
+		else
+			fs << numBillet << "-1430-00" << i << ";" << "PASVALISE\n";
 	}
+	cout << "*** Résumé du billet ***" << endl;
+	cout << "Numéro du billet : " << numBillet << endl;
+	cout << "Nombre d'accompagnants : " << nbVoyageurs << endl;
+	cout << "Poids total bagages : " << getTotalWeight(poidsBagages) << endl;
+	cout << "Excédent poids : " << getExcessWeight(poidsBagages) << endl;
+	cout << "Supplément à payer : " << getAddedTaxes(poidsBagages) << endl;
+	cout << "Paiement effectué ? ";
+	cin >> paiementOK;
 }
 
 
