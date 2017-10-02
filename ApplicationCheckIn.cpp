@@ -20,6 +20,9 @@ using namespace std;
 
 void BilletsManager();
 void AddBillet();
+float getTotalWeight(float* poidsBagages);
+float getExcessWeight(float* poidsBagages);
+float getAddedTaxes(float* poidsBagages);
 
 
 #define	PORT	50000
@@ -121,8 +124,8 @@ void AddBillet()
 	fstream fichiercsv;
 	char numBillet[100];
 	int nbVoyageurs=0;
-	float poidsBagages[20];
-	char typeBagage[20];
+	float poidsBagages[20]={0};
+	char typeBagage[20]={'X'};
 	char paiementOK;
 	// Encodage des données
 	cout << "*** VOL 757 POWDER-AIRLINES - Kaboul 14h30 ***" << endl;
@@ -131,27 +134,30 @@ void AddBillet()
 	// Creation et ouverture du fichiercsv
 	try
 	{
-		fs.open(numBillet << "_lug.csv",fstream::out);
+		fichiercsv.open(strcat(numBillet,"_lug.csv"),fstream::out);
 	}
 	catch(exception &e)
 	{
 		cout << "Erreur creation du fichier lug.csv" << endl;
 	}
 	cout << "Nombre d'accompagnants ?";
-	cin >> nbVoyageur;
+	cin >> nbVoyageurs;
 	for(int i=0;i<20;i++)
 	{
 		cout << "Poids du bagage n°" << i+1 << " <Enter si fini>: ";
-		cin >> poidsBagages[i];
-		if(poidsBagages[i] == '\n')
+		cin.ignore();
+		if(cin.get() == '\n')
 			break;
+		cin >> poidsBagages[i];
 		cout << "Valise ? ";
+		cin.ignore();
 		cin >> typeBagage[i];
 		if(typeBagage[i] == 'O' || typeBagage[i] == 'o')
-			fs << numBillet << "-1430-00" << i << ";" << "VALISE\n";
+			fichiercsv << numBillet << "-1430-00" << i << ";" << "VALISE\n";
 		else
-			fs << numBillet << "-1430-00" << i << ";" << "PASVALISE\n";
+			fichiercsv << numBillet << "-1430-00" << i << ";" << "PASVALISE\n";
 	}
+	fichiercsv.close();
 	cout << "*** Résumé du billet ***" << endl;
 	cout << "Numéro du billet : " << numBillet << endl;
 	cout << "Nombre d'accompagnants : " << nbVoyageurs << endl;
@@ -159,10 +165,31 @@ void AddBillet()
 	cout << "Excédent poids : " << getExcessWeight(poidsBagages) << endl;
 	cout << "Supplément à payer : " << getAddedTaxes(poidsBagages) << endl;
 	cout << "Paiement effectué ? ";
+	cin.ignore();
 	cin >> paiementOK;
 }
 
+float getTotalWeight(float *poidsBagages)
+{
+	int i=0;
+	float sum=0;
+	while(*(poidsBagages+i) != 0)
+	{
+		sum = sum + *(poidsBagages + i);
+		i++;
+	}
+	return sum;
+}
 
+float getExcessWeight(float* poidsBagages)
+{
+	return 0;
+}
+
+float getAddedTaxes(float* poidsBagages)
+{
+	return 0;
+}
 
 
 
