@@ -1,11 +1,17 @@
-#include <unistd.h>
-#include <signal.h>
-#include <pthread.h>
-#include <time.h>
-#include <limits.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <sys/socket.h>
+#include <sys/types.h>
 #include <iostream>
-#include <fstream>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <netdb.h>
 #include <string.h>
+#include <netinet/tcp.h>
+#include <unistd.h>
+#include "SocketException.h"
+#include "socketLib.h"
+#include "libUtils.h"
 
 using namespace std;
 
@@ -114,8 +120,26 @@ void Identify()
 	}
 }
 
+int sendMsgRequest(int phandle, TypeRequete pt, char *pmsg, int psize)
+{
+	int taille = psize+2*(sizeof(int));
+	char *pbuf = (char*)malloc(taille);
+	sprintf(pbuf,"%d%d%s", pt,taille,pmsg);
+	int ret = sendSize(phandle, pbuf, taille);
+	free(pbuf);
+	return ret;
+}
 
-
+char *receiveMsgRequest(int handle, TypeRequete *pt, int *psize)
+{
+	char *pbuf;
+	pbuf = receiveSize(handle, 2*sizeof(int));
+	*pt = (TypeRequete) atoi(pbuf);
+	*psize = atoi(&(pbuf[sizeof(int)]));
+	free(pbuf);
+	pbuf = receiveSize(handle, *psize);
+	return pbuf;
+}
 
 
 

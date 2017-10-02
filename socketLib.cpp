@@ -15,18 +15,6 @@
 
 using namespace std;
 
-#define TAILLELECSEP (10)
-
-typedef enum TypeRequete 
-{
-   Connect = 1,
-	Deconnect,
-	Ack,
-	CheckTicket,
-	CheckLuggage,
-	PayementDone,
-}TypeRequete;
-
 
 int ServerInit(int pport)
 {

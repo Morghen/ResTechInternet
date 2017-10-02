@@ -107,9 +107,12 @@ int main()
 void *ThClient(void *)
 {
 	cout << "Thread : " << pthread_self() << " lance" << endl;
-	int handleS;char *bufMsg;
+	int handleS;
+	char *msgRecv;
 	char bufMsgSend[MAXSTRING] = {0};
 	pthread_mutex_lock(&mutexHandle);
+	TypeRequete typeCli, typeSer;
+	int sizeCli, sizeSer;
 	
 	while(nbHandleWait == 0)
 		pthread_cond_wait(&condHandle,&mutexHandle);
@@ -128,8 +131,8 @@ void *ThClient(void *)
 	{
 		//
 		
-		bufMsg = receiveSize(handleS, MAXSTRING);
-		bufMsg[MAXSTRING-1]='\0';
+		msgRecv = receiveMsgRequest(handleS, &typeCli, &sizeCli);
+		bufMsg[sizeCli-1]='\0';
 		cout<< "Serv "<<pthread_self()<<" received : "<<bufMsg<<endl;
 		
 		sprintf(bufMsgSend, "ACK serv : %s", bufMsg);
