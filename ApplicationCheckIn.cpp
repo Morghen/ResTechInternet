@@ -13,12 +13,14 @@
 #include "libUtils.h"
 #include "socketLib.h"
 #include "SocketException.h"
+#include "Billets.h"
 
 #define MAXSTRING		(500)
 
 using namespace std;
 
 void BilletsManager();
+void AddBillet();
 
 
 #define	PORT	50000
@@ -104,7 +106,7 @@ void BilletsManager()
 	switch(choix)
 	{
 		case '1':
-			//AddBillet(); // Ajout d'un billets
+			AddBillet(); // Ajout d'un billets
 			break;
 		case '2':
 			return;
@@ -114,7 +116,13 @@ void BilletsManager()
 	
 }
 
-
+void AddBillet()
+{
+	Billet newBillet();
+	cout << "*** VOL 757 POWDER-AIRLINES - Kaboul 14h30 ***" << endl;
+	cout << "Numéro de billet ?";
+	
+}
 
 
 
