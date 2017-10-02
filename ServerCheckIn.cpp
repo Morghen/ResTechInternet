@@ -106,43 +106,91 @@ int main()
 
 void *ThClient(void *)
 {
-	cout << "Thread : " << pthread_self() << " lance" << endl;
-	int handleS;
-	char *msgRecv;
-	char bufMsgSend[MAXSTRING] = {0};
-	pthread_mutex_lock(&mutexHandle);
-	TypeRequete typeCli, typeSer;
-	int sizeCli, sizeSer;
-	
-	while(nbHandleWait == 0)
-		pthread_cond_wait(&condHandle,&mutexHandle);
-	
-	for(int i=0; i<NB_THREADS; i++)
+	try
 	{
-		if(handleService[i] != 0)
+		cout << "Thread : " << pthread_self() << " lance" << endl;
+		int handleS;
+		char *msgRecv, *msgSend;
+		char bufMsgSend[MAXSTRING] = {0};
+		pthread_mutex_lock(&mutexHandle);
+		TypeRequete typeCli, typeSer;
+		int sizeCli, sizeSer;
+	
+		while(nbHandleWait == 0)
+			pthread_cond_wait(&condHandle,&mutexHandle);
+	
+		for(int i=0; i<NB_THREADS; i++)
 		{
-			handleS = handleService[i];
-			handleService[i] = 0;
+			if(handleService[i] != 0)
+			{
+				handleS = handleService[i];
+				handleService[i] = 0;
+			}
 		}
+		pthread_mutex_unlock(&mutexHandle);
+		cout << "recup handle"<<endl;
+		while(1)
+		{
+			//
+			msgRecv = receiveMsgRequest(handleS, &typeCli, &sizeCli);
+			//bufMsg[sizeCli-1]='\0';
+			cout<< "Serv "<<pthread_self()<<" received : "<<msgRecv<<endl;
+		
+			switch(typeCli)
+			{
+				case Connect:
+					//
+					cout << "connect"<<endl;
+					typeSer = Ack;
+					break;
+				case Deconnect:
+					//
+					cout << "deconnect"<<endl;
+					typeSer = Ack;
+					break;
+				case CheckTicket:
+					//
+					cout << "check ticket"<<endl;
+					typeSer = Ack;
+					break;
+				case CheckLuggage:
+					//
+					cout << "check luggage"<<endl;
+					typeSer = Ack;
+					break;
+				case PayementDone:
+					//
+					cout << "payement"<<endl;
+					typeSer = Ack;
+					break;
+				default:
+					typeSer = Nok;
+					cout << "default"<<endl;
+					break;
+			}
+			sizeSer = strlen(msgRecv)+11;
+			msgSend = (char*)malloc(sizeSer);
+			sprintf(msgSend, "ACK serv : %s",msgRecv);
+		
+			sendMsgRequest(handleS, typeSer, msgSend, sizeSer);
+			cout<< "Serv "<<pthread_self()<<" sended : "<<msgSend<<endl;
+			free(msgRecv);
+			free(msgSend);
+		
+		}
+		cout << pthread_self() << " je meurs" << endl;
+		pthread_exit(0);
 	}
-	pthread_mutex_unlock(&mutexHandle);
-	cout << "recup handle"<<endl;
-	while(1)
+	catch(SocketException &e)
 	{
-		//
-		
-		msgRecv = receiveMsgRequest(handleS, &typeCli, &sizeCli);
-		bufMsg[sizeCli-1]='\0';
-		cout<< "Serv "<<pthread_self()<<" received : "<<bufMsg<<endl;
-		
-		sprintf(bufMsgSend, "ACK serv : %s", bufMsg);
-		
-		sendSize(handleS, bufMsgSend, MAXSTRING);
-		cout<< "Serv "<<pthread_self()<<" sended : "<<bufMsgSend<<endl;
-		free(bufMsg);
+		cout <<"Erreur socket : " << e.getMsg() << " n° : " << e.getNbrErr()<<endl;
 	}
-	cout << pthread_self() << " je meurs" << endl;
-	pthread_exit(0);
+	catch(...)
+	{
+		cout << "Erreur inconnue "<< endl;
+		perror(" t");
+		exit(0);
+	}
 }
 
 

@@ -46,7 +46,7 @@ int checkSep(char *pbuf, int psize, char *psep)
 }
 
 int CheckLoginPassword(char* lg,char* password)
-{
+{/*
 	// Variables
 	fstream fs;
 	char tmp[100]={0};
@@ -92,7 +92,7 @@ int CheckLoginPassword(char* lg,char* password)
 	}
 	cout << "Fin fichier atteint, aucune correspondance" << endl;
 	fs.close();
-	return -1;
+	return -1;*/
 		
 }
 
@@ -124,7 +124,10 @@ int sendMsgRequest(int phandle, TypeRequete pt, char *pmsg, int psize)
 {
 	int taille = psize+2*(sizeof(int));
 	char *pbuf = (char*)malloc(taille);
-	sprintf(pbuf,"%d%d%s", pt,taille,pmsg);
+	int tmp = pt;
+	memcpy(pbuf, &tmp, sizeof(int));
+	memcpy(&pbuf[sizeof(int)], &psize, sizeof(int));
+	memcpy(&pbuf[2*sizeof(int)], pmsg, psize);
 	int ret = sendSize(phandle, pbuf, taille);
 	free(pbuf);
 	return ret;
@@ -138,9 +141,14 @@ char *receiveMsgRequest(int handle, TypeRequete *pt, int *psize)
 	*psize = atoi(&(pbuf[sizeof(int)]));
 	free(pbuf);
 	pbuf = receiveSize(handle, *psize);
+	//pbuf[(*psize)-1]='\0';
 	return pbuf;
 }
 
+int random(int max, int min)
+{
+	return (rand()%(max-min))+min;
+}
 
 
 

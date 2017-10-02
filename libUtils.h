@@ -7,6 +7,7 @@ typedef enum TypeRequete
    Connect = 1,
 	Deconnect,
 	Ack,
+	Nok,
 	CheckTicket,
 	CheckLuggage,
 	PayementDone,
@@ -24,7 +25,7 @@ int sendMsgRequest(int phandle, TypeRequete pt, char *pmsg, int psize);
 
 char *receiveMsgRequest(int handle, TypeRequete *pt, int *psize);
 
-
+int random(int max, int min);
 
 
 

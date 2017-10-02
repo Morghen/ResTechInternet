@@ -162,6 +162,7 @@ char *receiveSize(int phandle, int psize)
 		if(tmpLec == -1)
 			throw SocketException("Error receive size too short");
 	}
+	//buf[psize*sizeof(char)]='\0';
 	if(i != psize)
 		throw SocketException("Error receive size too short");
 	//memcpy(pbuf, buf, sizeof(psize));

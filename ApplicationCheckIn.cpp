@@ -36,6 +36,10 @@ int main()
 	// Init et ouverture des sockets
 	char *bufMsgReceive;
 	char bufMsgSend[MAXSTRING] = {0};
+	char *msgSend;
+	char *msgRecv;
+	TypeRequete typeCli, typeSer;
+	int sizeCli, sizeSer;
 	
 	try
 	{
@@ -50,13 +54,18 @@ int main()
 		
 		for(int i=0; i< 5; i++)
 		{
-			sprintf(bufMsgSend, "message n°%d sur 5",i);
-			sendSize(handleSocket, bufMsgSend, MAXSTRING);
-			cout << "client sended: "<<bufMsgSend<<endl;
+			sizeCli = random(10, 30);
+			msgSend = (char *)malloc(sizeCli);
+			memset(msgSend, 'a'+random(0, 10), sizeCli-2);
+			msgSend[sizeCli-1]='\0';
 			
-			bufMsgReceive = receiveSize(handleSocket, MAXSTRING);
-			cout << "client receive: "<<bufMsgReceive<<endl;
-			free(bufMsgReceive);
+			sendMsgRequest(handleSocket, (TypeRequete)random(0,5), msgSend, sizeCli);
+			cout << "client sended: "<<msgSend<<endl;
+			
+			msgRecv = receiveMsgRequest(handleSocket, &typeSer, &sizeSer);
+			cout << "client receive: "<<msgRecv<<endl;
+			free(msgSend);
+			free(msgRecv);
 		}
 		
 	}
@@ -74,7 +83,7 @@ int main()
 	
 	// Menu principal
 	while(1)
-	{
+	{/*
 		cout << "*** MENU PRINCIPAL ***" << endl;
 		cout << "1. Connexion" << endl;
 		cout << "2. Quitter" << endl;
@@ -88,7 +97,7 @@ int main()
 				break;
 			default:
 				exit(0);			
-		}
+		}*/
 	}
 	
 	// Fermeture socket
