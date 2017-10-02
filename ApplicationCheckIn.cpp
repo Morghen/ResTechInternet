@@ -108,7 +108,7 @@ void BilletsManager()
 	switch(choix)
 	{
 		case '1':
-			AddBillet(); // Ajout d'un billet
+			//AddBillet(); // Ajout d'un billet
 			break;
 		case '2':
 			return;
@@ -117,11 +117,11 @@ void BilletsManager()
 	}
 	
 }
-
+/*
 void AddBillet()
 {
 	// Variables
-	fstream fichiercsv;
+	fstream fs;
 	char numBillet[100];
 	char nomFichier[100];
 	int nbVoyageurs=0;
@@ -172,6 +172,7 @@ void AddBillet()
 	cin >> paiementOK;
 }
 
+*/
 float getTotalWeight(float *poidsBagages)
 {
 	float sum=0;
