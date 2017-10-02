@@ -22,7 +22,7 @@ void BilletsManager();
 void AddBillet();
 float getTotalWeight(float* poidsBagages);
 float getExcessWeight(float* poidsBagages);
-float getAddedTaxes(float* poidsBagages);
+float getAddedTaxes(float* excessWeight);
 
 
 #define	PORT	50000
@@ -166,7 +166,7 @@ void AddBillet()
 	cout << "Nombre d'accompagnants : " << nbVoyageurs << endl;
 	cout << "Poids total bagages : " << getTotalWeight(poidsBagages) << " kg" << endl;
 	cout << "Excédent poids : " << getExcessWeight(poidsBagages) << " kg" << endl;
-	cout << "Supplément à payer : " << getAddedTaxes(poidsBagages) << endl;
+	cout << "Supplément à payer : " << getAddedTaxes(getExcessWeight(poidsBagages)) << " EUR" << endl;
 	cout << "Paiement effectué ? ";
 	cin.ignore();
 	cin >> paiementOK;
@@ -198,9 +198,9 @@ float getExcessWeight(float* poidsBagages)
 	return excess;
 }
 
-float getAddedTaxes(float* poidsBagages)
+float getAddedTaxes(float* excessWeight)
 {
-	return 0;
+	return (*excessWeight)*2.95;
 }
 
 
