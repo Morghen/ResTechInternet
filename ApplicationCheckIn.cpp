@@ -19,7 +19,7 @@
 using namespace std;
 
 void BilletsManager();
-void AddBillet();
+//void AddBillet();
 
 
 #define	PORT	50000
@@ -105,7 +105,7 @@ void BilletsManager()
 	switch(choix)
 	{
 		case '1':
-			AddBillet(); // Ajout d'un billet
+			//AddBillet(); // Ajout d'un billet
 			break;
 		case '2':
 			return;
@@ -114,11 +114,11 @@ void BilletsManager()
 	}
 	
 }
-
+/*
 void AddBillet()
 {
 	// Variables
-	fstream fichiercsv;
+	fstream fs;
 	char numBillet[100];
 	int nbVoyageurs=0;
 	float poidsBagages[20];
@@ -131,7 +131,7 @@ void AddBillet()
 	// Creation et ouverture du fichiercsv
 	try
 	{
-		fs.open(numBillet << "_lug.csv",fstream::out);
+		fs.open(numBillet + "_lug.csv",fstream::out);
 	}
 	catch(exception &e)
 	{
@@ -162,7 +162,7 @@ void AddBillet()
 	cin >> paiementOK;
 }
 
-
+*/
 
 
 
