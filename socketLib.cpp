@@ -21,6 +21,7 @@ typedef enum TypeRequete
 {
    Connect = 1,
 	Deconnect,
+	Ack,
 	CheckTicket,
 	CheckLuggage,
 	PayementDone,
