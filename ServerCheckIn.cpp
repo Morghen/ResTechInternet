@@ -123,10 +123,12 @@ void *ThClient(void *)
 		cout << "Thread : " << pthread_self() << " lance" << endl;
 		int handleS;
 		char *msgRecv, *msgSend;
-		pthread_mutex_lock(&mutexHandle);
+		char *tmpLogin, *tmpMdp;
+		
 		TypeRequete typeCli, typeSer;
 		int sizeCli, sizeSer;
 	
+		pthread_mutex_lock(&mutexHandle);
 		while(nbHandleWait == 0)
 			pthread_cond_wait(&condHandle,&mutexHandle);
 	
@@ -153,6 +155,11 @@ void *ThClient(void *)
 					//
 					cout << "connect"<<endl;
 					typeSer = Ack;
+					tmpLogin = strtok(msgRecv, ",");
+					tmpMdp = strtok(NULL,",");
+					cout << tmpLogin << "  -- " <<tmpMdp<<endl;
+					if(CheckLoginPassword(tmpLogin, tmpMdp) == -1)
+						typeSer = Nok;
 					break;
 				case Deconnect:
 					//
