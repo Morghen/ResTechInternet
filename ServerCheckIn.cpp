@@ -34,6 +34,8 @@ pthread_mutex_t mutexHandle;
 pthread_cond_t condHandle;
 int handleServer;
 
+
+
 void *ThClient(void *);
 
 int main()
