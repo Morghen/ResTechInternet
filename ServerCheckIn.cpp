@@ -49,7 +49,7 @@ int main()
 		cout << "Demarrage pool de threads" << endl;
 		for(int j=0;j<NB_THREADS;j++)
 			pthread_create(&ThreadId[j],NULL,ThClient,NULL);
-		cout << "Fin creation threads" << endl;
+		//cout << "Fin creation threads" << endl;
 		
 		//creation socket et handle avec bind
 		handleServer = ServerInit(PORT);
@@ -127,7 +127,7 @@ void *ThClient(void *)
 			}
 		}
 		pthread_mutex_unlock(&mutexHandle);
-		cout << "recup handle"<<endl;
+		//cout << "recup handle"<<endl;
 		while(1)
 		{
 			//
@@ -183,6 +183,7 @@ void *ThClient(void *)
 	catch(SocketException &e)
 	{
 		cout <<"Erreur socket : " << e.getMsg() << " n° : " << e.getNbrErr()<<endl;
+		perror(" ");
 	}
 	catch(...)
 	{
