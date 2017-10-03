@@ -3,6 +3,7 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <iostream>
+#include <fstream>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <netdb.h>

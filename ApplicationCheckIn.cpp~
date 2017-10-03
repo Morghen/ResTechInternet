@@ -22,7 +22,7 @@ void BilletsManager();
 void AddBillet();
 float getTotalWeight(float* poidsBagages);
 float getExcessWeight(float* poidsBagages);
-float getAddedTaxes(float* excessWeight);
+float getAddedTaxes(float excessWeight);
 
 
 #define	PORT	50000

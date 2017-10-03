@@ -27,6 +27,16 @@ char *receiveMsgRequest(int handle, TypeRequete *pt, int *psize);
 
 int random(int min, int max);
 
+void BilletsManager();
+
+void AddBillet();
+
+float getTotalWeight(float* poidsBagages);
+
+float getExcessWeight(float* poidsBagages);
+
+float getAddedTaxes(float excessWeight);
+
 
 
 
