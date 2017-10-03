@@ -5,3 +5,4 @@ ServerCheckIn
 *.h~
 makefile~
 ApplicationChekIn
+*.cpp~

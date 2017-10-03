@@ -176,7 +176,7 @@ char *receiveSep(int phandle, char *psep, int *psize)
 	int tmpLec=0;
 	int i, isep=0;
 
-	char tmpBuf[5500] = {0};
+	char tmpBuf[5500] = {'\0'};
 	bool fini = false;
 	int tailleS, tailleO;
 	tailleO = sizeof(int);
@@ -187,6 +187,7 @@ char *receiveSep(int phandle, char *psep, int *psize)
 	char *buf = (char *)malloc(tailleS*sizeof(char));
 	for(i=0; fini == false; i++)
 	{
+		memset(tmpBuf, '\0', 5500);
 		tmpLec = recv(phandle, &(tmpBuf[0]), tailleS, 0);
 		if(tmpLec == -1)
 			throw SocketException("Erreur receive sep");
