@@ -10,6 +10,7 @@
 #include <unistd.h>
 #include <pthread.h>
 #include <limits.h>
+#include <signal.h>
 #include "libUtils.h"
 #include "socketLib.h"
 #include "SocketException.h"
@@ -25,24 +26,33 @@ using namespace std;
 
 pthread_t ThreadId[NB_THREADS] = {0};
 
-
+void HandlerSIGINT(int s);
 
 int handleService[NB_THREADS] = {0};
 int nbHandleWait = 0;
 pthread_mutex_t mutexHandle;
 pthread_cond_t condHandle;
-
+int handleServer;
 
 void *ThClient(void *);
 
 int main()
 {
-	int handleServer;
+	
 	int handleTmp;
 	int i;
 	struct sockaddr_in *paddrsock=NULL;
 	try
 	{
+		//sig int handler
+		struct sigaction sigAct;
+
+	  	sigAct.sa_handler = HandlerSIGINT;
+	  	sigAct.sa_flags = 0;
+	  	sigemptyset(&sigAct.sa_mask);
+		sigaction(SIGINT,&sigAct,NULL); 
+	
+	
 		pthread_mutex_init(&mutexHandle, NULL);
 		pthread_cond_init(&condHandle, NULL);
 		cout << "Demarrage serveur" << endl;
@@ -194,7 +204,17 @@ void *ThClient(void *)
 	return NULL;
 }
 
-
+void HandlerSIGINT(int s)
+{
+	pthread_mutex_lock(&mutexHandle);
+	for(int i =0; i<NB_THREADS; i++)
+	{
+		if(handleService[i] != 0)
+			close(handleService[i]);
+	}
+	close(handleServer);
+	pthread_mutex_unlock(&mutexHandle);
+}
 
 
 
