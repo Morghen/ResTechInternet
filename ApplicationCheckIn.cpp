@@ -38,6 +38,7 @@ int main()
 	char *msgRecv;
 	TypeRequete typeCli, typeSer;
 	int sizeCli, sizeSer;
+	srand(time(NULL));
 	
 	try
 	{
