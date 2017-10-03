@@ -94,8 +94,9 @@ int CheckLoginPassword(char* lg,char* password)
 	cout << "Fin fichier atteint, aucune correspondance" << endl;
 	fs.close();
 	return -1;
-	return 1;
 }
+
+
 
 int sendMsgRequest(int phandle, TypeRequete pt, char *pmsg, int psize)
 {

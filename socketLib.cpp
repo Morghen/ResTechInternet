@@ -138,6 +138,7 @@ int SendMsg(int phandle )
 
 int sendSize(int phandle, char *pbuf, int psize)
 {
+
 	//
 	int tmpLec=0;
 
