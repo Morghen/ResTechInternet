@@ -18,12 +18,6 @@
 
 using namespace std;
 
-void BilletsManager();
-void AddBillet();
-float getTotalWeight(float* poidsBagages);
-float getExcessWeight(float* poidsBagages);
-float getAddedTaxes(float excessWeight);
-
 
 #define	PORT	50000
 
@@ -103,5 +97,4 @@ int main()
 	close(handleSocket);
 	free(adresseSocket);
 }
-
 
