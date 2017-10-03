@@ -21,17 +21,22 @@ using namespace std;
 
 #define	PORT	50000
 
+void Identify();
+
+char *msgSend;
+char *msgRecv;
+TypeRequete typeCli, typeSer;
+int sizeCli, sizeSer;
+
+	int handleSocket;
+
 int main()
 {
 	// Variables
 	char choix;
 	struct sockaddr_in *adresseSocket = (sockaddr_in *) malloc(sizeof(struct sockaddr_in));
-	int handleSocket;
+
 	// Init et ouverture des sockets
-	char *msgSend;
-	char *msgRecv;
-	TypeRequete typeCli, typeSer;
-	int sizeCli, sizeSer;
 	srand(time(NULL));
 	
 	try
@@ -114,7 +119,7 @@ void Identify()
 		cin >> password;
 	 	sprintf(typerequete,"%s,%s",login,password);
 		sendMsgRequest(handleSocket,Connect,typerequete,strlen(typerequete));
-		receiveMsgRequest(handlesocket,&typeSer,&sizeSer);
+		receiveMsgRequest(handleSocket,&typeSer,&sizeSer);
 		if(CheckLoginPassword(login,password) == -1)	//Fct qui check le login-mdp (renvoie 0 si OK, renvoie -1 si erreur)
 			cout << "Compte inconnu, verifiez votre login/mot de passe" << endl;
 		else

@@ -97,29 +97,6 @@ int CheckLoginPassword(char* lg,char* password)
 }
 
 
-void Identify()
-{
-	// Variables
-	int loopAgain = 1;
-	char login[50]={0},password[50]={0};
-	// Recherche
-	while(loopAgain == 1)
-	{
-		cout << "*** IDENTIFICATION ***" << endl;
-		cout << "Login : ";
-		cin >> login;
-		cout << "Mot de passe : ";
-		cin >> password;	
-		if(CheckLoginPassword(login,password) == -1)	//Fct qui check le login-mdp (renvoie 0 si OK, renvoie -1 si erreur)
-			cout << "Compte inconnu, verifiez votre login/mot de passe" << endl;
-		else
-		{
-			cout << "Compte valide, bienvenue " << login << endl;
-			loopAgain=0;
-		}
-	}
-}
-
 int sendMsgRequest(int phandle, TypeRequete pt, char *pmsg, int psize)
 {
 	int taille = psize+sizeof(int)+sizeof(char);
