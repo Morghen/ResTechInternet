@@ -36,7 +36,7 @@ int checkSep(char *pbuf, int psize, char *psep)
 	int i,j;
 	for(i=0; i <psize; i++)
 	{
-		for(j=0; j<strlen(psep); j++)
+		for(j=0; j<(int)strlen(psep); j++)
 		{
 			if(pbuf[i] == psep[j])
 				return i;
@@ -93,7 +93,7 @@ int CheckLoginPassword(char* lg,char* password)
 	cout << "Fin fichier atteint, aucune correspondance" << endl;
 	fs.close();
 	return -1;*/
-		
+	return 1;
 }
 
 
@@ -125,10 +125,20 @@ int sendMsgRequest(int phandle, TypeRequete pt, char *pmsg, int psize)
 	int taille = psize+sizeof(int)+sizeof(char);
 	char *pbuf = (char*)malloc(taille);
 	int tmp = pt;
+	//cout << "send : "<<pmsg<<endl;
+	
+	
 	memcpy(pbuf, &tmp, sizeof(int));
-	memcpy(&pbuf[sizeof(int)], &psize, sizeof(int));
-	memcpy(&pbuf[2*sizeof(int)], pmsg, psize);
+	memcpy((pbuf+sizeof(int)), pmsg, psize);
+	//cout << "send : "<< pbuf<<endl;
+	
+	
+	
+	pbuf[taille-1]='$';
+	//cout << "send : "<< pbuf<<endl;
+	
 	int ret = sendSize(phandle, pbuf, taille);
+	
 	free(pbuf);
 	return ret;
 }
@@ -136,16 +146,20 @@ int sendMsgRequest(int phandle, TypeRequete pt, char *pmsg, int psize)
 char *receiveMsgRequest(int handle, TypeRequete *pt, int *psize)
 {
 	char *pbuf;
-	pbuf = receiveSize(handle, 2*sizeof(int));
-	*pt = (TypeRequete) atoi(pbuf);
-	*psize = atoi(&(pbuf[sizeof(int)]));
-	free(pbuf);
-	pbuf = receiveSize(handle, *psize);
-	//pbuf[(*psize)-1]='\0';
-	return pbuf;
+	int size;
+	char sep[2] = "$";
+	pbuf = receiveSep(handle, sep, &size);
+	//cout << "recv : "<<pbuf<<endl;
+	*psize = size - sizeof(int);
+	memcpy(pt,pbuf, sizeof(int));
+	
+	char *tbuf = (char*)malloc(*psize);
+	memcpy(tbuf, pbuf+sizeof(int), *psize);
+	tbuf[(*psize)-1]='\0';
+	return tbuf;
 }
 
-int random(int max, int min)
+int random(int min, int max)
 {
 	return (rand()%(max-min))+min;
 }

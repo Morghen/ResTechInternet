@@ -25,7 +25,7 @@ int sendMsgRequest(int phandle, TypeRequete pt, char *pmsg, int psize);
 
 char *receiveMsgRequest(int handle, TypeRequete *pt, int *psize);
 
-int random(int max, int min);
+int random(int min, int max);
 
 
 

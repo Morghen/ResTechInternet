@@ -25,7 +25,7 @@ int sendSize(int phandle, char *pbuf, int psize);
 
 char *receiveSize(int phandle, int psize);
 
-
+char *receiveSep(int phandle, char *psep, int *psize);
 
 
 

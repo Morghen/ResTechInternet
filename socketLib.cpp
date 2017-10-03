@@ -170,7 +170,7 @@ char *receiveSize(int phandle, int psize)
 	return buf;
 }
 
-char *receiveSep(int phandle, char *psep)
+char *receiveSep(int phandle, char *psep, int *psize)
 {
 	//
 	int tmpLec=0;
@@ -202,7 +202,7 @@ char *receiveSep(int phandle, char *psep)
 		memcpy(&(buf[tailleMsg]), &tmpBuf, tmpLec);
 		tailleMsg += tmpLec;
 	}
-	
+	*psize = tailleMsg;
 	return buf;
 }
 

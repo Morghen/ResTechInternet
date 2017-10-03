@@ -111,7 +111,6 @@ void *ThClient(void *)
 		cout << "Thread : " << pthread_self() << " lance" << endl;
 		int handleS;
 		char *msgRecv, *msgSend;
-		char bufMsgSend[MAXSTRING] = {0};
 		pthread_mutex_lock(&mutexHandle);
 		TypeRequete typeCli, typeSer;
 		int sizeCli, sizeSer;
@@ -191,6 +190,7 @@ void *ThClient(void *)
 		perror(" t");
 		exit(0);
 	}
+	return NULL;
 }
 
 

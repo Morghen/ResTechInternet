@@ -34,8 +34,6 @@ int main()
 	struct sockaddr_in *adresseSocket = (sockaddr_in *) malloc(sizeof(struct sockaddr_in));
 	int handleSocket;
 	// Init et ouverture des sockets
-	char *bufMsgReceive;
-	char bufMsgSend[MAXSTRING] = {0};
 	char *msgSend;
 	char *msgRecv;
 	TypeRequete typeCli, typeSer;
@@ -56,11 +54,11 @@ int main()
 		{
 			sizeCli = random(10, 30);
 			msgSend = (char *)malloc(sizeCli);
-			memset(msgSend, 'a'+random(0, 10), sizeCli-2);
+			memset(msgSend, 'a'+random(0, 10), sizeCli-1);
 			msgSend[sizeCli-1]='\0';
-			
-			sendMsgRequest(handleSocket, (TypeRequete)random(0,5), msgSend, sizeCli);
-			cout << "client sended: "<<msgSend<<endl;
+			int tmpReq = random(1,5);
+			sendMsgRequest(handleSocket, (TypeRequete)tmpReq, msgSend, sizeCli);
+			cout << "client sended: "<< tmpReq << " : "<<msgSend<<endl;
 			
 			msgRecv = receiveMsgRequest(handleSocket, &typeSer, &sizeSer);
 			cout << "client receive: "<<msgRecv<<endl;
