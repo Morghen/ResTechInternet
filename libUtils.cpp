@@ -122,7 +122,7 @@ void Identify()
 
 int sendMsgRequest(int phandle, TypeRequete pt, char *pmsg, int psize)
 {
-	int taille = psize+2*(sizeof(int));
+	int taille = psize+sizeof(int)+sizeof(char);
 	char *pbuf = (char*)malloc(taille);
 	int tmp = pt;
 	memcpy(pbuf, &tmp, sizeof(int));
