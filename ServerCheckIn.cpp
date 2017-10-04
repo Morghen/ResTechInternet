@@ -198,7 +198,9 @@ void *ThClient(void *)
 			char sepTmp[2];
 			sprintf(sepTmp, "%c", sepTrame);
 			if(pdsBaggage == NULL)
+			{
 				pdsBaggage = (float*)malloc(sizeof(float));
+			}
 
 			float pdsEnTrop=0;
 			float resteAPayer=0;
@@ -302,16 +304,21 @@ void *ThClient(void *)
 					if((valise == NULL) && (nbrBaggage > 0) && (login == 1))
 					{
 						cout << "avant malloc nbreBaggage " << nbrBaggage << " taille : "  << sizeof(char)*nbrBaggage <<  endl;
+						if(valise != NULL)
+							free(valise);
 						valise = (char*)malloc(sizeof(char)*(nbrBaggage));
 						typeSer = Ack;
+						cout << "avant malloc nbreBaggage " << nbrBaggage << " taille : "  << sizeof(char)*nbrBaggage <<  endl;
 						//
 						int i;
 						char *tmpStr;
 						tmpStr = strtok(msgRecv, sepTmp);
 						for(i=0; i< nbrBaggage  && tmpStr != NULL; i++)
 						{
-							tmpStr = strtok(NULL, sepTmp);
+							
+							
 							valise[i] = tmpStr[0];
+							tmpStr = strtok(NULL, sepTmp);
 						}
 					}
 					else
@@ -319,7 +326,7 @@ void *ThClient(void *)
 						cout << "passe par Nok dans CheckLuggage_2" << endl;
 						typeSer = Nok;
 					}
-					sizeSer = 20*sizeof(char);
+					sizeSer = 8*sizeof(char);
 					msgSend = (char*)malloc(sizeSer);
 					sprintf(msgSend, "ACK serv");
 					break;
@@ -361,10 +368,10 @@ void *ThClient(void *)
 					{
 						typeSer = Nok;
 					}
-					if(pdsBaggage != NULL)
+					/*if(pdsBaggage != NULL)
 						free(pdsBaggage);
 					if(valise != NULL)
-						free(valise);
+						free(valise);*/
 					pdsBaggage = NULL;
 					sizeSer = strlen(msgRecv);
 					msgSend = (char*)malloc(sizeSer);
