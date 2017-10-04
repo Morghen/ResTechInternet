@@ -230,6 +230,10 @@ void *ThClient(void *)
 				case CheckLuggage_1:
 					//
 					cout << "check poids bagages"<<endl;
+					float poidsBagage[20];
+					poidsBagage[0] = atof(strtok(msgRecv,sepTmp));
+					int i = 1;
+					
 					typeSer = Ack;
 					break;
 				case CheckLuggage_2:
