@@ -272,7 +272,13 @@ void AddBillet()
 		i++;
 	}
 	sendMsgRequest(handleSocket,CheckLuggage_1,typerequete2,strlen(typerequete2),finTrame);
-	receiveMsgRequest(handleSocket,&typeSer,&sizeSer,finTrame);
+	// Recupération info bagages
+	char* infoBaggages;
+	infoBaggages = receiveMsgRequest(handleSocket,&typeSer,&sizeSer,finTrame);
+	float pdsTot,pdsExces,pdsTaxes;
+	memcpy(&pdsTot,infoBaggages,sizeof(float));
+	memcpy(&pdsExces,infoBaggages[sizeof(float)+sizeof(char)],sizeof(float));
+	memcpy(&pdsTaxes,infoBaggages[2*sizeof(float)+2*sizeof(char)],sizeof(float));
 	sprintf(typerequete2,"\0");
 	while(typeBagage[j] != 'X')
 	{
@@ -285,9 +291,9 @@ void AddBillet()
 	cout << "*** Résumé du billet ***" << endl;
 	cout << "Numéro du billet : " << numBillet << endl;
 	cout << "Nombre d'accompagnants : " << nbVoyageurs << endl;
-	cout << "Poids total bagages : " << getTotalWeight(poidsBagages) << " kg" << endl;
-	cout << "Excédent poids : " << getExcessWeight(poidsBagages) << " kg" << endl;
-	cout << "Supplément à payer : " << getAddedTaxes(getExcessWeight(poidsBagages)) << " EUR" << endl;
+	cout << "Poids total bagages : " << pdsTot << " kg" << endl;
+	cout << "Excédent poids : " << pdsExces << " kg" << endl;
+	cout << "Supplément à payer : " << pdsTaxes << " EUR" << endl;
 	cout << "Paiement effectué ? ";
 	cin.ignore();
 	cin >> paiementOK; // Envoie requete PAYMENT_DONE
