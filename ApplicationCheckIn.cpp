@@ -53,7 +53,6 @@ int main()
 		fstream fichierconf;
 		try
 		{
-			char tmpBuf[1000];
 			string strbuf;
 			fichierconf.open("server_checkin.conf",fstream::in);
 			fichierconf.ignore(1000, '=');
