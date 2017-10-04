@@ -21,17 +21,23 @@ using namespace std;
 
 #define	PORT	50000
 
+void Identify();
+void BilletsManager();
+
+char *msgSend;
+char *msgRecv;
+TypeRequete typeCli, typeSer;
+int sizeCli, sizeSer;
+
+	int handleSocket;
+
 int main()
 {
 	// Variables
 	char choix;
 	struct sockaddr_in *adresseSocket = (sockaddr_in *) malloc(sizeof(struct sockaddr_in));
-	int handleSocket;
+
 	// Init et ouverture des sockets
-	char *msgSend;
-	char *msgRecv;
-	TypeRequete typeCli, typeSer;
-	int sizeCli, sizeSer;
 	srand(time(NULL));
 	
 	try
@@ -45,7 +51,7 @@ int main()
 		
 		cout <<"client connecter !!!!!!"<<endl;	
 		
-		for(int i=0; i< 5; i++)
+		/*for(int i=0; i< 5; i++)
 		{
 			sizeCli = random(10, 30);
 			msgSend = (char *)malloc(sizeCli);
@@ -59,7 +65,7 @@ int main()
 			cout << "client receive: "<<msgRecv<<endl;
 			free(msgSend);
 			free(msgRecv);
-		}
+		}*/
 		
 		// Menu principal
 		while(1)
@@ -114,8 +120,8 @@ void Identify()
 		cin >> password;
 	 	sprintf(typerequete,"%s,%s",login,password);
 		sendMsgRequest(handleSocket,Connect,typerequete,strlen(typerequete));
-		receiveMsgRequest(handlesocket,&typeSer,&sizeSer)
-		if(CheckLoginPassword(login,password) == -1)	//Fct qui check le login-mdp (renvoie 0 si OK, renvoie -1 si erreur)
+		receiveMsgRequest(handleSocket,&typeSer,&sizeSer);
+		if(typeSer == Nok)	//Fct qui check le login-mdp (renvoie 0 si OK, renvoie -1 si erreur)
 			cout << "Compte inconnu, verifiez votre login/mot de passe" << endl;
 		else
 		{
@@ -124,3 +130,108 @@ void Identify()
 		}
 	}
 }
+
+
+void BilletsManager()
+{
+	char choix;
+	cout << "*** Gestions des billets ***" << endl;
+	cout << "1. Ajouter un billet" << endl;
+	cout << "2. Changer de compte" << endl;
+	cout << "6. Quitter" << endl;
+	cout << "Votre choix : ";
+	cin >> choix;
+	switch(choix)
+	{
+		case '1':
+			AddBillet(); // Ajout d'un billet
+			break;
+		case '2':
+			//change de compte
+			return;
+		default:
+			exit(0);			
+	}
+	
+}
+
+void AddBillet()
+{
+	// Variables
+	fstream fichiercsv;
+	char numBillet[100];
+	char nomFichier[100];
+	int nbVoyageurs=0;
+	char typerequet[20];
+	float poidsBagages[20]={0};
+	char typeBagage[20]={'X'};
+	char paiementOK;
+	// Encodage des données
+	cout << "*** VOL 757 POWDER-AIRLINES - Kaboul 14h30 ***" << endl;
+	cout << "Numéro de billet ? ";
+	cin >> numBillet;
+	strcpy(nomFichier,numBillet);
+	// Creation et ouverture du fichiercsv
+	try
+	{
+		fichiercsv.open(strcat(nomFichier,"_lug.csv"),fstream::out);
+	}
+	catch(exception &e)
+	{
+		cout << "Erreur creation du fichier lug.csv" << endl;
+	}
+	cout << "Nombre d'accompagnants ? ";
+	cin >> nbVoyageurs;
+	sprintf(typerequete,"%s,%d",numBillet,nbVoyageurs);
+	sendMsgRequest(handleSocket,CheckTicket,typerequete,strlen(typerequete));
+	receiveMsgRequest(handleSocket,&typeSer,&sizeSer);
+		if(typeSer == Nok)
+		{
+			cout << "Billet introuvable ou nbVoyageurs incorrect" << endl;
+			return;
+		}	
+		else
+			cout << "Billet " << numBillet << " valide" << endl;
+	for(int i=0;i<20;i++)
+	{
+		cout << "Poids du bagage n°" << i+1 << " <Enter si fini>: ";
+		cin.ignore();
+		if(cin.peek() == '\n')
+			break;
+		cin >> poidsBagages[i];
+		cout << "Valise ? ";
+		cin.ignore();
+		cin >> typeBagage[i];
+		if(typeBagage[i] == 'O' || typeBagage[i] == 'o')
+			fichiercsv << numBillet << "-1430-00" << i << ";" << "VALISE\n";
+		else
+			fichiercsv << numBillet << "-1430-00" << i << ";" << "PASVALISE\n";
+	}
+	//Fin encodage données & fermeture fichier
+	fichiercsv.close();
+	// Envoie requete CHECK_LUGGAGE et recupere tous les calculs
+	cout << "*** Résumé du billet ***" << endl;
+	cout << "Numéro du billet : " << numBillet << endl;
+	cout << "Nombre d'accompagnants : " << nbVoyageurs << endl;
+	cout << "Poids total bagages : " << getTotalWeight(poidsBagages) << " kg" << endl;
+	cout << "Excédent poids : " << getExcessWeight(poidsBagages) << " kg" << endl;
+	cout << "Supplément à payer : " << getAddedTaxes(getExcessWeight(poidsBagages)) << " EUR" << endl;
+	cout << "Paiement effectué ? ";
+	cin.ignore();
+	cin >> paiementOK; // Envoie requete PAYMENT_DONE
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
