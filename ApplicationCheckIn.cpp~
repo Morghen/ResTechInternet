@@ -53,7 +53,6 @@ int main()
 		fstream fichierconf;
 		try
 		{
-			char tmpBuf[1000];
 			string strbuf;
 			fichierconf.open("server_checkin.conf",fstream::in);
 			fichierconf.ignore(1000, '=');
@@ -201,7 +200,7 @@ void AddBillet()
 	char numBillet[100];
 	char nomFichier[100];
 	int nbVoyageurs=0;
-	char typerequet[20];
+	char typerequete[20];
 	float poidsBagages[20]={0};
 	char typeBagage[20]={'X'};
 	char paiementOK;
