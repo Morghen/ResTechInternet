@@ -255,7 +255,7 @@ void *ThClient(void *)
 					msgSend[sizeof(float)]=sepTrame;
 					memcpy(&(msgSend[sizeof(float)+sizeof(char)]), &pdsTot, sizeof(float));
 					msgSend[sizeof(float)*2]=sepTrame;
-					memcpy(msgSend, &pdsTot, sizeof(float));
+					memcpy(&(msgSend[2*sizeof(float)+2*sizeof(char)]), &pdsTot, sizeof(float));
 
 		
 					sendMsgRequest(handleS, typeSer, msgSend, sizeSer, finTrame);
