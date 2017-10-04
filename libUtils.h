@@ -23,9 +23,11 @@ int sendMsgRequest(int phandle, TypeRequete pt, char *pmsg, int psize);
 
 char *receiveMsgRequest(int handle, TypeRequete *pt, int *psize);
 
-int random(int min, int max);
+int sendMsgRequest(int phandle, TypeRequete pt, char *pmsg, int psize, char finTrame);
 
-void BilletsManager();
+char *receiveMsgRequest(int handle, TypeRequete *pt, int *psize, char finTrame);
+
+int random(int min, int max);
 
 void AddBillet();
 
