@@ -22,6 +22,7 @@ using namespace std;
 #define	PORT	50000
 
 void Identify();
+void BilletsManager();
 
 char *msgSend;
 char *msgRecv;
@@ -50,7 +51,7 @@ int main()
 		
 		cout <<"client connecter !!!!!!"<<endl;	
 		
-		for(int i=0; i< 5; i++)
+		/*for(int i=0; i< 5; i++)
 		{
 			sizeCli = random(10, 30);
 			msgSend = (char *)malloc(sizeCli);
@@ -64,7 +65,7 @@ int main()
 			cout << "client receive: "<<msgRecv<<endl;
 			free(msgSend);
 			free(msgRecv);
-		}
+		}*/
 		
 		// Menu principal
 		while(1)
@@ -120,7 +121,7 @@ void Identify()
 	 	sprintf(typerequete,"%s,%s",login,password);
 		sendMsgRequest(handleSocket,Connect,typerequete,strlen(typerequete));
 		receiveMsgRequest(handleSocket,&typeSer,&sizeSer);
-		if(CheckLoginPassword(login,password) == -1)	//Fct qui check le login-mdp (renvoie 0 si OK, renvoie -1 si erreur)
+		if(typeSer == Nok)	//Fct qui check le login-mdp (renvoie 0 si OK, renvoie -1 si erreur)
 			cout << "Compte inconnu, verifiez votre login/mot de passe" << endl;
 		else
 		{
@@ -129,3 +130,42 @@ void Identify()
 		}
 	}
 }
+
+
+void BilletsManager()
+{
+	char choix;
+	cout << "*** Gestions des billets ***" << endl;
+	cout << "1. Ajouter un billet" << endl;
+	cout << "2. Changer de compte" << endl;
+	cout << "6. Quitter" << endl;
+	cout << "Votre choix : ";
+	cin >> choix;
+	switch(choix)
+	{
+		case '1':
+			AddBillet(); // Ajout d'un billet
+			break;
+		case '2':
+			//change de compte
+			return;
+		default:
+			exit(0);			
+	}
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

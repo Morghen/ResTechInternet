@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <sys/socket.h>
 #include <sys/types.h>
+#include <fstream>
 #include <iostream>
 #include <netinet/in.h>
 #include <arpa/inet.h>
@@ -34,7 +35,9 @@ pthread_mutex_t mutexHandle;
 pthread_cond_t condHandle;
 int handleServer;
 
-
+char finTrame;
+char sepTrame;
+int portServer;
 
 void *ThClient(void *);
 
@@ -63,7 +66,32 @@ int main()
 			pthread_create(&ThreadId[j],NULL,ThClient,NULL);
 		//cout << "Fin creation threads" << endl;
 		
+		//optention info
+		fstream fichierconf;
+		try
+		{
+			
+			fichierconf.open("server_checkin.conf",fstream::in);
+			fichierconf.ignore(10000, '=');
+		}
+		catch(...)
+		{
+			//
+			if(fichierconf.is_open() == false)
+			{
+				fichierconf.open("server_checkin.conf",fstream::out);
+				fichierconf << "Port_Service=70000"<<endl<<"Port_Admin=70009"<<endl;
+				fichierconf << "fin-trame=#"<<endl<<"sep-csv=;"<<endl;
+				portServer = 70000;
+				sepTrame = ';';
+				finTrame = '#';
+			}
+		}
+		
+		
+		
 		//creation socket et handle avec bind
+		
 		handleServer = ServerInit(PORT);
 		
 		while(1)

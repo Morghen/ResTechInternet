@@ -98,6 +98,46 @@ int CheckLoginPassword(char* lg,char* password)
 
 
 
+int sendMsgRequest(int phandle, TypeRequete pt, char *pmsg, int psize, char finTrame)
+{
+	int taille = psize+sizeof(int)+sizeof(char);
+	char *pbuf = (char*)malloc(taille);
+	int tmp = pt;
+	//cout << "send : "<<pmsg<<endl;
+	
+	
+	memcpy(pbuf, &tmp, sizeof(int));
+	memcpy((pbuf+sizeof(int)), pmsg, psize);
+	//cout << "send : "<< pbuf<<endl;
+	
+	
+	
+	pbuf[taille-1]=finTrame;
+	//cout << "send : "<< pbuf<<endl;
+	
+	int ret = sendSize(phandle, pbuf, taille);
+	
+	free(pbuf);
+	return ret;
+}
+
+char *receiveMsgRequest(int handle, TypeRequete *pt, int *psize, char finTrame)
+{
+	char *pbuf;
+	int size;
+	char sep[2];
+	sprintf(sep, "%c", finTrame);
+	pbuf = receiveSep(handle, sep, &size);
+	//cout << "recv : "<<pbuf<<endl;
+	*psize = size - sizeof(int);
+	memcpy(pt,pbuf, sizeof(int));
+	
+	char *tbuf = (char*)malloc(*psize);
+	memcpy(tbuf, pbuf+sizeof(int), *psize);
+	tbuf[(*psize)-1]='\0';
+	return tbuf;
+}
+
 int sendMsgRequest(int phandle, TypeRequete pt, char *pmsg, int psize)
 {
 	int taille = psize+sizeof(int)+sizeof(char);
@@ -125,7 +165,7 @@ char *receiveMsgRequest(int handle, TypeRequete *pt, int *psize)
 {
 	char *pbuf;
 	int size;
-	char sep[2] = "$";
+	char sep[2]="$";
 	pbuf = receiveSep(handle, sep, &size);
 	//cout << "recv : "<<pbuf<<endl;
 	*psize = size - sizeof(int);
@@ -142,27 +182,7 @@ int random(int min, int max)
 	return (rand()%(max-min))+min;
 }
 
-void BilletsManager()
-{
-	char choix;
-	cout << "*** Gestions des billets ***" << endl;
-	cout << "1. Ajouter un billet" << endl;
-	cout << "2. Changer de compte" << endl;
-	cout << "3. Quitter" << endl;
-	cout << "Votre choix : ";
-	cin >> choix;
-	switch(choix)
-	{
-		case '1':
-			AddBillet(); // Ajout d'un billet
-			break;
-		case '2':
-			return;
-		default:
-			exit(0);			
-	}
-	
-}
+
 
 void AddBillet()
 {
