@@ -274,7 +274,7 @@ void AddBillet()
 		sprintf(typerequete2,"%s%c%c",typerequete2,typeBagage[j],sepTrame);
 		j++;
 	}
-	typeBagage[j-1]='\0';
+	//typeBagage[j-1]='\0';
 	sendMsgRequest(handleSocket,CheckLuggage_2,typerequete2,strlen(typerequete2),finTrame);
 	receiveMsgRequest(handleSocket,&typeSer,&sizeSer,finTrame);
 	// Affichage du résumé
