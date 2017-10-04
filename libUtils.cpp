@@ -191,6 +191,7 @@ void AddBillet()
 	char numBillet[100];
 	char nomFichier[100];
 	int nbVoyageurs=0;
+	char typerequet[20];
 	float poidsBagages[20]={0};
 	char typeBagage[20]={'X'};
 	char paiementOK;
@@ -210,6 +211,16 @@ void AddBillet()
 	}
 	cout << "Nombre d'accompagnants ? ";
 	cin >> nbVoyageurs;
+	sprintf(typerequete,"%s,%d",numBillet,nbVoyageurs);
+	sendMsgRequest(handleSocket,CheckTicket,typerequete,strlen(typerequete));
+	receiveMsgRequest(handleSocket,&typeSer,&sizeSer);
+		if(typeSer == Nok)
+		{
+			cout << "Billet introuvable ou nbVoyageurs incorrect" << endl;
+			return;
+		}	
+		else
+			cout << "Billet " << numBillet << " valide" << endl;
 	for(int i=0;i<20;i++)
 	{
 		cout << "Poids du bagage n°" << i+1 << " <Enter si fini>: ";
@@ -272,9 +283,49 @@ float getAddedTaxes(float excessWeight)
 	return excessWeight*2.95;
 }
 
-void CheckTicket(char* numBillet,int nbVoyageurs)
+int Check_Ticket(char* numBillet,int nbVoyageurs)
 {
-
+	fstream fs;
+	char voyageurs[20];
+	char tmp[200];
+	sprintf(voyageurs,"%d",nbVoyageurs);
+	try
+	{
+		fs.open(numBillet,fstream::in);
+	}
+	catch(exception &e)
+	{
+		cout << "Fichier introuvable" << endl;
+		return -1;
+	}
+	while(fs.peek() != EOF) // Recherche tant que EOF n'est pas atteint
+	{
+		fs.getline(tmp,100,';');
+		cout << "Recherche du numBillet :" << numBillet << " & " << tmp << endl;
+		if(strcmp(numBillet,tmp) == 0)
+		{
+			cout << "Billet trouve,recherche accompagnants" << endl;
+			fs.getline(tmp,100);
+			cout << "Comparaison voyageurs & tmp :" << voyageurs << " & " << tmp << endl;
+			if(strcmp(voyageurs,tmp) == 0)
+			{
+				cout << "NumBillet & nbVoyageurs trouvé" << endl;
+				fs.close();
+				return 0;
+			}
+			else
+			{
+				cout << "nbVoyageurs incorrect" << endl;
+				fs.close();
+				return -1;
+			}
+		}
+		else
+		{
+			cout << "Pas encore trouve le billet" << endl;
+			fs.getline(tmp,100); // On passe le password
+		}
+	}
 }
 
 
