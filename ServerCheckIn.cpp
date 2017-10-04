@@ -303,12 +303,10 @@ void *ThClient(void *)
 					cout << "check type bagages"<<endl;
 					if((valise == NULL) && (nbrBaggage > 0) && (login == 1))
 					{
-						cout << "avant malloc nbreBaggage " << nbrBaggage << " taille : "  << sizeof(char)*nbrBaggage <<  endl;
 						if(valise != NULL)
 							free(valise);
 						valise = (char*)malloc(sizeof(char)*(nbrBaggage));
 						typeSer = Ack;
-						cout << "avant malloc nbreBaggage " << nbrBaggage << " taille : "  << sizeof(char)*nbrBaggage <<  endl;
 						//
 						int i;
 						char *tmpStr;
