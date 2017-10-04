@@ -132,6 +132,7 @@ int main()
 					BilletsManager();	// Gestion des billets
 					break;
 				default:
+					close(handleSocket);
 					exit(0);			
 			}
 		}
@@ -145,7 +146,6 @@ int main()
 	{
 		cout << "Erreur inconnue "<< endl;
 		perror(" t");
-		exit(0);
 	}
 	
 	
@@ -205,6 +205,7 @@ void BilletsManager()
 				receiveMsgRequest(handleSocket,&typeSer,&sizeSer,finTrame);
 				return;
 			default:
+				close(handleSocket);
 				exit(0);			
 		}
 	}

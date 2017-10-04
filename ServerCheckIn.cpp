@@ -210,7 +210,7 @@ void *ThClient(void *)
 			{
 				case Connect:
 					//
-					cout << "connect"<<endl;
+					cout <<"Serv "<<pthread_self()<< "connect"<<endl;
 					typeSer = Ack;
 					
 					tmpLogin = strtok(msgRecv, sepTmp);
@@ -218,21 +218,23 @@ void *ThClient(void *)
 					cout << tmpLogin << "  -- " <<tmpMdp<<endl;
 					if(CheckLoginPassword(tmpLogin, tmpMdp) == -1)
 						typeSer = Nok;
-					sizeSer = strlen(msgRecv);
+					sizeSer = 8*sizeof(char);
 					msgSend = (char*)malloc(sizeSer);
+					sprintf(msgSend, "ACK serv");
 					login = 1;
 					break;
 				case Deconnect:
 					//
-					cout << "deconnect"<<endl;
+					cout <<"Serv "<<pthread_self()<< "deconnect"<<endl;
 					typeSer = Ack;
-					sizeSer = strlen(msgRecv);
+					sizeSer = 8*sizeof(char);
 					msgSend = (char*)malloc(sizeSer);
+					sprintf(msgSend, "ACK serv");
 					login =0;
 					break;
 				case CheckTicket:
 					//
-					cout << "check ticket"<<endl;
+					cout <<"Serv "<<pthread_self()<< "check ticket"<<endl;
 					if(login == 1)
 					{
 						char *tmpStr = strtok(msgRecv, sepTmp);
@@ -255,12 +257,13 @@ void *ThClient(void *)
 					{
 						typeSer = Nok;
 					}
-					sizeSer = strlen(msgRecv);
+					sizeSer = 8*sizeof(char);
 					msgSend = (char*)malloc(sizeSer);
+					sprintf(msgSend, "ACK serv");
 					break;
 				case CheckLuggage_1:
 					//
-					cout << "check luggage"<<endl;
+					cout <<"Serv "<<pthread_self()<< "check luggage"<<endl;
 					if(login == 1)
 					{
 						char *tmpStr ;
@@ -300,7 +303,7 @@ void *ThClient(void *)
 					break;
 				case CheckLuggage_2:
 					//
-					cout << "check type bagages"<<endl;
+					cout <<"Serv "<<pthread_self()<< "check type bagages"<<endl;
 					if((valise == NULL) && (nbrBaggage > 0) && (login == 1))
 					{
 						if(valise != NULL)
@@ -330,7 +333,7 @@ void *ThClient(void *)
 					break;
 				case PayementDone:
 					//
-					cout << "payement"<< nbrBaggage << " "<< login<<endl;
+					cout <<"Serv "<<pthread_self()<< "payement"<<endl;
 					
 					if(nbrBaggage > 0 && numBillet != NULL && login == 1)
 					{
@@ -338,7 +341,6 @@ void *ThClient(void *)
 						if(msgRecv[0] == 'y' || msgRecv[0]=='Y')
 						{
 							typeSer = Ack;
-							cout << "payement OK"<<endl;
 							try
 							{
 								fichiercsv.open(strcat(numBillet,"_lug.csv"),fstream::out);
@@ -371,13 +373,15 @@ void *ThClient(void *)
 					if(valise != NULL)
 						free(valise);*/
 					pdsBaggage = NULL;
-					sizeSer = strlen(msgRecv);
+					sizeSer = 8*sizeof(char);
 					msgSend = (char*)malloc(sizeSer);
+					sprintf(msgSend, "ACK serv");
 					break;
 				default:
 					typeSer = Nok;
-					sizeSer = strlen(msgRecv);
+					sizeSer = 8*sizeof(char);
 					msgSend = (char*)malloc(sizeSer);
+					sprintf(msgSend, "Nok serv");
 					cout << "default"<<endl;
 					break;
 			}
@@ -385,7 +389,7 @@ void *ThClient(void *)
 			//sprintf(msgSend, "ACK serv : %s",msgRecv);
 		
 			sendMsgRequest(handleS, typeSer, msgSend, sizeSer, finTrame);
-			cout<< "Serv "<<pthread_self()<<" sended : "<<msgSend<<endl;
+			//cout<< "Serv "<<pthread_self()<<" sended : "<<msgSend<<endl;
 			free(msgRecv);
 			free(msgSend);
 			
