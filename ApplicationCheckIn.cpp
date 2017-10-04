@@ -238,15 +238,7 @@ void AddBillet()
 	}	
 	else
 		cout << "Billet " << numBillet << " valide" << endl;
-	// Creation et ouverture du fichiercsv
-	try
-	{
-		fichiercsv.open(strcat(nomFichier,"_lug.csv"),fstream::out);
-	}
-	catch(exception &e)
-	{
-		cout << "Erreur creation du fichier lug.csv" << endl;
-	}
+	// Encodage info
 	for(int i=0;i<20;i++)
 	{
 		cout << "Poids du bagage n°" << i+1 << " <Enter si fini>: ";
@@ -257,13 +249,7 @@ void AddBillet()
 		cout << "Valise ? ";
 		cin.ignore();
 		cin >> typeBagage[i];
-		if(typeBagage[i] == 'O' || typeBagage[i] == 'o')
-			fichiercsv << numBillet << "-1430-00" << i << ";" << "VALISE\n";
-		else
-			fichiercsv << numBillet << "-1430-00" << i << ";" << "PASVALISE\n";
 	}
-	//Fin encodage données & fermeture fichier
-	fichiercsv.close();
 	// Envoie requete CHECK_LUGGAGE et recupere tous les calculs
 	int i=0, j=0;
 	char typerequete2[1000];
