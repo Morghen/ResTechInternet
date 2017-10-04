@@ -157,9 +157,9 @@ void Identify()
 		cin >> login;
 		cout << "Mot de passe : ";
 		cin >> password;
-	 	sprintf(typerequete,"%s,%s",login,password);
-		sendMsgRequest(handleSocket,Connect,typerequete,strlen(typerequete));
-		receiveMsgRequest(handleSocket,&typeSer,&sizeSer);
+	 	sprintf(typerequete,"%s%c%s",login,sepTrame,password);
+		sendMsgRequest(handleSocket,Connect,typerequete,strlen(typerequete),finTrame);
+		receiveMsgRequest(handleSocket,&typeSer,&sizeSer,finTrame);
 		if(typeSer == Nok)	//Fct qui check le login-mdp (renvoie 0 si OK, renvoie -1 si erreur)
 			cout << "Compte inconnu, verifiez votre login/mot de passe" << endl;
 		else
@@ -201,7 +201,7 @@ void AddBillet()
 	char numBillet[100];
 	char nomFichier[100];
 	int nbVoyageurs=0;
-	char typerequet[20];
+	char typerequete[20];
 	float poidsBagages[20]={0};
 	char typeBagage[20]={'X'};
 	char paiementOK;
@@ -221,9 +221,9 @@ void AddBillet()
 	}
 	cout << "Nombre d'accompagnants ? ";
 	cin >> nbVoyageurs;
-	sprintf(typerequete,"%s,%d",numBillet,nbVoyageurs);
+	sprintf(typerequete,"%s%c%d",numBillet,sepTrame,nbVoyageurs);
 	sendMsgRequest(handleSocket,CheckTicket,typerequete,strlen(typerequete));
-	receiveMsgRequest(handleSocket,&typeSer,&sizeSer);
+	receiveMsgRequest(handleSocket,&typeSer,&sizeSer,finTrame);
 		if(typeSer == Nok)
 		{
 			cout << "Billet introuvable ou nbVoyageurs incorrect" << endl;

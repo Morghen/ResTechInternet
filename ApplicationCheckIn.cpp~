@@ -23,6 +23,7 @@ using namespace std;
 
 void Identify();
 void BilletsManager();
+void AddBillet();
 
 char *msgSend;
 char *msgRecv;
@@ -30,6 +31,11 @@ TypeRequete typeCli, typeSer;
 int sizeCli, sizeSer;
 
 	int handleSocket;
+	
+	
+int portServer;
+char sepTrame;
+char finTrame;
 
 int main()
 {
@@ -42,14 +48,47 @@ int main()
 	
 	try
 	{
-
+	
+		//fichier config
+		fstream fichierconf;
+		try
+		{
+			char tmpBuf[1000];
+			string strbuf;
+			fichierconf.open("server_checkin.conf",fstream::in);
+			fichierconf.ignore(1000, '=');
+			fichierconf >> portServer;
+			fichierconf.ignore(1000, '=');
+			fichierconf.ignore(1000, '=');
+			fichierconf >> sepTrame;
+			fichierconf.ignore(1000, '=');
+			fichierconf >> finTrame;
+		}
+		catch(...)
+		{
+			//
+			
+		}
+		if(fichierconf.is_open() == false)
+		{
+			fichierconf.open("server_checkin.conf",fstream::out);
+			fichierconf << "Port_Service=70000"<<endl<<"Port_Admin=70009"<<endl;
+			fichierconf << "sep-trame=$"<<endl;
+			fichierconf << "fin-trame=#"<<endl<<"sep-csv=;"<<endl;
+			portServer = 70000;
+			sepTrame = '$';
+			finTrame = '#';
+		}
+		
 		cout << "client socket init"<<endl;
-		handleSocket = ClientInit(PORT, adresseSocket);
+		handleSocket = ClientInit(portServer, adresseSocket);
 		
 		cout << "client connect"<<endl;
 		ClientConnect(handleSocket, adresseSocket);
 		
 		cout <<"client connecter !!!!!!"<<endl;	
+		
+		
 		
 		/*for(int i=0; i< 5; i++)
 		{
@@ -118,9 +157,9 @@ void Identify()
 		cin >> login;
 		cout << "Mot de passe : ";
 		cin >> password;
-	 	sprintf(typerequete,"%s,%s",login,password);
-		sendMsgRequest(handleSocket,Connect,typerequete,strlen(typerequete));
-		receiveMsgRequest(handleSocket,&typeSer,&sizeSer);
+	 	sprintf(typerequete,"%s%c%s",login,sepTrame,password);
+		sendMsgRequest(handleSocket,Connect,typerequete,strlen(typerequete),finTrame);
+		receiveMsgRequest(handleSocket,&typeSer,&sizeSer,finTrame);
 		if(typeSer == Nok)	//Fct qui check le login-mdp (renvoie 0 si OK, renvoie -1 si erreur)
 			cout << "Compte inconnu, verifiez votre login/mot de passe" << endl;
 		else
@@ -182,9 +221,9 @@ void AddBillet()
 	}
 	cout << "Nombre d'accompagnants ? ";
 	cin >> nbVoyageurs;
-	sprintf(typerequete,"%s,%d",numBillet,nbVoyageurs);
+	sprintf(typerequete,"%s%c%d",numBillet,sepTrame,nbVoyageurs);
 	sendMsgRequest(handleSocket,CheckTicket,typerequete,strlen(typerequete));
-	receiveMsgRequest(handleSocket,&typeSer,&sizeSer);
+	receiveMsgRequest(handleSocket,&typeSer,&sizeSer,finTrame);
 		if(typeSer == Nok)
 		{
 			cout << "Billet introuvable ou nbVoyageurs incorrect" << endl;
