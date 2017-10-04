@@ -4,6 +4,8 @@
 #include <sys/types.h>
 #include <fstream>
 #include <iostream>
+#include <sstream>
+#include <limits>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <netdb.h>
@@ -70,29 +72,41 @@ int main()
 		fstream fichierconf;
 		try
 		{
-			
+			char tmpBuf[1000];
+			string strbuf;
 			fichierconf.open("server_checkin.conf",fstream::in);
-			fichierconf.ignore(10000, '=');
+			fichierconf.ignore(1000, '=');
+			fichierconf >> portServer;
+			fichierconf.ignore(1000, '=');
+			fichierconf.ignore(1000, '=');
+			fichierconf >> sepTrame;
+			fichierconf.ignore(1000, '=');
+			fichierconf >> finTrame;
 		}
 		catch(...)
 		{
 			//
-			if(fichierconf.is_open() == false)
-			{
-				fichierconf.open("server_checkin.conf",fstream::out);
-				fichierconf << "Port_Service=70000"<<endl<<"Port_Admin=70009"<<endl;
-				fichierconf << "fin-trame=#"<<endl<<"sep-csv=;"<<endl;
-				portServer = 70000;
-				sepTrame = ';';
-				finTrame = '#';
-			}
+			
 		}
-		
+		if(fichierconf.is_open() == false)
+		{
+			fichierconf.open("server_checkin.conf",fstream::out);
+			fichierconf << "Port_Service=70000"<<endl<<"Port_Admin=70009"<<endl;
+			fichierconf << "sep-trame=$"<<endl;
+			fichierconf << "fin-trame=#"<<endl<<"sep-csv=;"<<endl;
+			portServer = 70000;
+			sepTrame = '$';
+			finTrame = '#';
+		}
+		cout << "server config "<<endl;
+		cout <<" port = "<<portServer<<endl;
+		cout << "fin trame = "<<finTrame<<endl;
+		cout << "sep trame = "<<sepTrame<<endl;
 		
 		
 		//creation socket et handle avec bind
 		
-		handleServer = ServerInit(PORT);
+		handleServer = ServerInit(portServer);
 		
 		while(1)
 		{
@@ -173,7 +187,7 @@ void *ThClient(void *)
 		while(1)
 		{
 			//
-			msgRecv = receiveMsgRequest(handleS, &typeCli, &sizeCli);
+			msgRecv = receiveMsgRequest(handleS, &typeCli, &sizeCli, finTrame);
 			//bufMsg[sizeCli-1]='\0';
 			cout<< "Serv "<<pthread_self()<<" received : "<<msgRecv<<endl;
 		
@@ -218,7 +232,7 @@ void *ThClient(void *)
 			msgSend = (char*)malloc(sizeSer);
 			sprintf(msgSend, "ACK serv : %s",msgRecv);
 		
-			sendMsgRequest(handleS, typeSer, msgSend, sizeSer);
+			sendMsgRequest(handleS, typeSer, msgSend, sizeSer, finTrame);
 			cout<< "Serv "<<pthread_self()<<" sended : "<<msgSend<<endl;
 			free(msgRecv);
 			free(msgSend);
