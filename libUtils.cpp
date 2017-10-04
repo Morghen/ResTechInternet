@@ -264,9 +264,11 @@ int Check_Ticket(char* numBillet,int nbVoyageurs)
 	}
 }
 
-int Check_Luggage(float* poidsBagages)
+int Check_Luggage(float* poidsBagages,char* typeBagages)
 {
-	
+	fstream fs;
+	float poidsBagage[20];
+	char typeBagage[20];
 }
 
 

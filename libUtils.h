@@ -9,7 +9,8 @@ typedef enum TypeRequete
 	Ack,
 	Nok,
 	CheckTicket,
-	CheckLuggage,
+	CheckLuggage_1,
+	CheckLuggage_2,
 	PayementDone,
 }TypeRequete;
 
@@ -39,7 +40,7 @@ float getAddedTaxes(float excessWeight);
 
 int Check_Ticket(char* numBillet,int nbVoyageurs);
 
-int Check_Luggage(float* poidsBagages);
+int Check_Luggage(float* poidsBagages,char* typeBagages);
 
 
 
