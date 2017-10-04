@@ -10,6 +10,7 @@
 #include <netdb.h>
 #include <string.h>
 #include <unistd.h>
+#include <signal.h>
 #include "libUtils.h"
 #include "socketLib.h"
 #include "SocketException.h"
@@ -24,6 +25,9 @@ using namespace std;
 void Identify();
 void BilletsManager();
 void AddBillet();
+
+void HandlerSIGINT(int s);
+
 
 char *msgSend;
 char *msgRecv;
@@ -45,6 +49,14 @@ int main()
 
 	// Init et ouverture des sockets
 	srand(time(NULL));
+	
+	//sig int handler
+		struct sigaction sigAct;
+
+	  	sigAct.sa_handler = HandlerSIGINT;
+	  	sigAct.sa_flags = 0;
+	  	sigemptyset(&sigAct.sa_mask);
+		sigaction(SIGINT,&sigAct,NULL); 
 	
 	try
 	{
@@ -265,6 +277,12 @@ void AddBillet()
 
 
 
+void HandlerSIGINT(int s)
+{
+	
+	close(handleSocket);
+	
+}
 
 
 
