@@ -277,8 +277,8 @@ void AddBillet()
 	infoBaggages = receiveMsgRequest(handleSocket,&typeSer,&sizeSer,finTrame);
 	float pdsTot,pdsExces,pdsTaxes;
 	memcpy(&pdsTot,infoBaggages,sizeof(float));
-	memcpy(&pdsExces,infoBaggages[sizeof(float)+sizeof(char)],sizeof(float));
-	memcpy(&pdsTaxes,infoBaggages[2*sizeof(float)+2*sizeof(char)],sizeof(float));
+	memcpy(&pdsExces,&(infoBaggages[sizeof(float)+sizeof(char)]),sizeof(float));
+	memcpy(&pdsTaxes,&(infoBaggages[2*sizeof(float)+2*sizeof(char)]),sizeof(float));
 	sprintf(typerequete2,"\0");
 	while(typeBagage[j] != 'X')
 	{
