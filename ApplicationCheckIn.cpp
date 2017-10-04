@@ -31,6 +31,11 @@ TypeRequete typeCli, typeSer;
 int sizeCli, sizeSer;
 
 	int handleSocket;
+	
+	
+int portServer;
+char sepTrame;
+char finTrame;
 
 int main()
 {
@@ -43,14 +48,47 @@ int main()
 	
 	try
 	{
-
+	
+		//fichier config
+		fstream fichierconf;
+		try
+		{
+			char tmpBuf[1000];
+			string strbuf;
+			fichierconf.open("server_checkin.conf",fstream::in);
+			fichierconf.ignore(1000, '=');
+			fichierconf >> portServer;
+			fichierconf.ignore(1000, '=');
+			fichierconf.ignore(1000, '=');
+			fichierconf >> sepTrame;
+			fichierconf.ignore(1000, '=');
+			fichierconf >> finTrame;
+		}
+		catch(...)
+		{
+			//
+			
+		}
+		if(fichierconf.is_open() == false)
+		{
+			fichierconf.open("server_checkin.conf",fstream::out);
+			fichierconf << "Port_Service=70000"<<endl<<"Port_Admin=70009"<<endl;
+			fichierconf << "sep-trame=$"<<endl;
+			fichierconf << "fin-trame=#"<<endl<<"sep-csv=;"<<endl;
+			portServer = 70000;
+			sepTrame = '$';
+			finTrame = '#';
+		}
+		
 		cout << "client socket init"<<endl;
-		handleSocket = ClientInit(PORT, adresseSocket);
+		handleSocket = ClientInit(portServer, adresseSocket);
 		
 		cout << "client connect"<<endl;
 		ClientConnect(handleSocket, adresseSocket);
 		
 		cout <<"client connecter !!!!!!"<<endl;	
+		
+		
 		
 		/*for(int i=0; i< 5; i++)
 		{
