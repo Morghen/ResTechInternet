@@ -262,25 +262,7 @@ int Check_Ticket(char* numBillet,int nbVoyageurs)
 			fs.getline(tmp,100); // On passe le password
 		}
 	}
-}
-
-float Check_Luggage(float* poidsBagages, int psize)
-{
-	float pdsEnTrop=0;
-	int i;
-	for(i=0; i<psize; i++)
-	{
-		if(*poidsBagages > 20)
-		{
-			pdsEnTrop += (*poidsBagages)- 20.0;
-		}
-	}
-}
-int Check_Luggage2(float* poidsBagages,char* typeBagages)
-{
-	fstream fs;
-	float poidsBagage[20];
-	char typeBagage[20];
+	return -1;
 }
 
 
