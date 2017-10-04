@@ -202,6 +202,7 @@ void BilletsManager()
 				char typerequete[20];
 				sprintf(typerequete,"Deconnect");
 				sendMsgRequest(handleSocket,Deconnect,typerequete,strlen(typerequete),finTrame);	//change de compte
+				receiveMsgRequest(handleSocket,&typeSer,&sizeSer,finTrame);
 				return;
 			default:
 				exit(0);			
@@ -272,6 +273,7 @@ void AddBillet()
 		i++;
 	}
 	sendMsgRequest(handleSocket,CheckLuggage_1,typerequete2,strlen(typerequete2),finTrame);
+	receiveMsgRequest(handleSocket,&typeSer,&sizeSer,finTrame);
 	// Recupération info bagages
 	char* infoBaggages;
 	infoBaggages = receiveMsgRequest(handleSocket,&typeSer,&sizeSer,finTrame);
@@ -297,6 +299,12 @@ void AddBillet()
 	cout << "Paiement effectué ? ";
 	cin.ignore();
 	cin >> paiementOK; // Envoie requete PAYMENT_DONE
+	if(paiementOK == 'y' || paiementOK == 'Y')
+		sprintf(typerequete,"Y%c",sepTrame);
+	else
+		sprintf(typerequete,"N%c",sepTrame);
+	sendMsgRequest(handleSocket,PayementDone,typerequete,strlen(typerequete));
+	receiveMsgRequest(handleSocket,&typeSer,&sizeSer,finTrame);
 }
 
 
