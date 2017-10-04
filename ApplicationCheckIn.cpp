@@ -221,6 +221,7 @@ void AddBillet()
 	float poidsBagages[20]={0};
 	char typeBagage[20]={'X'};
 	char paiementOK;
+	int nbrBaggage =0;
 	// Encodage des données
 	cout << "*** VOL 757 POWDER-AIRLINES - Kaboul 14h30 ***" << endl;
 	cout << "Numéro de billet ? ";
@@ -258,6 +259,7 @@ void AddBillet()
 		sprintf(typerequete2,"%s%f%c",typerequete2,poidsBagages[i],sepTrame);
 		i++;
 	}
+	nbrBaggage = i;
 	poidsBagages[i-1]='\0';
 	sendMsgRequest(handleSocket,CheckLuggage_1,typerequete2,strlen(typerequete2),finTrame);
 	//receiveMsgRequest(handleSocket,&typeSer,&sizeSer,finTrame);
@@ -269,12 +271,13 @@ void AddBillet()
 	memcpy(&pdsTot,infoBaggages,sizeof(float));
 	memcpy(&pdsExces,&(infoBaggages[sizeof(float)+sizeof(char)]),sizeof(float));
 	memcpy(&pdsTaxes,&(infoBaggages[2*sizeof(float)+2*sizeof(char)]),sizeof(float));
-	while(typeBagage[j] != 'X')
+	memset(typerequete2, '\0', strlen(typerequete2));
+	while(typeBagage[j] != 'X' && j < nbrBaggage)
 	{
 		sprintf(typerequete2,"%s%c%c",typerequete2,typeBagage[j],sepTrame);
 		j++;
 	}
-	//typeBagage[j-1]='\0';
+	typeBagage[j-1]='\0';
 	sendMsgRequest(handleSocket,CheckLuggage_2,typerequete2,strlen(typerequete2),finTrame);
 	receiveMsgRequest(handleSocket,&typeSer,&sizeSer,finTrame);
 	// Affichage du résumé
