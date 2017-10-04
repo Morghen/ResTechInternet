@@ -227,11 +227,15 @@ void *ThClient(void *)
 						typeSer = Nok;
 					}
 					break;
-				case CheckLuggage:
+				case CheckLuggage_1:
 					//
-					cout << "check luggage"<<endl;
+					cout << "check poids bagages"<<endl;
 					typeSer = Ack;
 					break;
+				case CheckLuggage_2:
+					//
+					cout << "check type bagages"<<endl;
+					typeSer = Ack;
 				case PayementDone:
 					//
 					cout << "payement"<<endl;
