@@ -94,15 +94,10 @@ int CheckLoginPassword(char* lg,char* password)
 	cout << "Fin fichier atteint, aucune correspondance" << endl;
 	fs.close();
 	return -1;
-<<<<<<< HEAD
-	return 1;
-}
-
-=======
 }
 
 
->>>>>>> 211ddc4280b230e968e8db8617e0a600b6274fd8
+
 int sendMsgRequest(int phandle, TypeRequete pt, char *pmsg, int psize)
 {
 	int taille = psize+sizeof(int)+sizeof(char);
@@ -257,7 +252,10 @@ float getAddedTaxes(float excessWeight)
 	return excessWeight*2.95;
 }
 
+void CheckTicket(char* numBillet,int nbVoyageurs)
+{
 
+}
 
 
 

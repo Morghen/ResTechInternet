@@ -252,7 +252,10 @@ float getAddedTaxes(float excessWeight)
 	return excessWeight*2.95;
 }
 
+void CheckTicket(char* numBillet,int nbVoyageurs)
+{
 
+}
 
 
 

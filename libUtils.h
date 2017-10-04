@@ -35,6 +35,7 @@ float getExcessWeight(float* poidsBagages);
 
 float getAddedTaxes(float excessWeight);
 
+void CheckTicket(char* numBillet,int nbVoyageurs);
 
 
 
