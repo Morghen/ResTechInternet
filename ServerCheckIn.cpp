@@ -231,7 +231,9 @@ void *ThClient(void *)
 					cout << "check ticket"<<endl;
 					if(login == 1)
 					{
-						numBillet = strtok(msgRecv, sepTmp);
+						char *tmpStr = strtok(msgRecv, sepTmp);
+						numBillet = (char*) malloc(strlen(tmpStr)+1);
+						strcpy(numBillet, tmpStr);
 						int nbPassager;
 						nbPassager = atoi(strtok(NULL,sepTmp));
 						if(Check_Ticket(numBillet, nbPassager) == 0)
@@ -318,13 +320,15 @@ void *ThClient(void *)
 					break;
 				case PayementDone:
 					//
-					cout << "payement"<<endl;
+					cout << "payement"<< nbrBaggage << " "<< login<<endl;
 					
 					if(nbrBaggage > 0 && numBillet != NULL && login == 1)
 					{
+						cout << "msgRecv[0] "<<msgRecv[0]<<endl;
 						if(msgRecv[0] == 'y' || msgRecv[0]=='Y')
 						{
 							typeSer = Ack;
+							cout << "payement OK"<<endl;
 							try
 							{
 								fichiercsv.open(strcat(numBillet,"_lug.csv"),fstream::out);
