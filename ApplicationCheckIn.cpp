@@ -209,15 +209,6 @@ void AddBillet()
 	cout << "Numéro de billet ? ";
 	cin >> numBillet;
 	strcpy(nomFichier,numBillet);
-	// Creation et ouverture du fichiercsv
-	try
-	{
-		fichiercsv.open(strcat(nomFichier,"_lug.csv"),fstream::out);
-	}
-	catch(exception &e)
-	{
-		cout << "Erreur creation du fichier lug.csv" << endl;
-	}
 	cout << "Nombre d'accompagnants ? ";
 	cin >> nbVoyageurs;
 	sprintf(typerequete,"%s%c%d",numBillet,sepTrame,nbVoyageurs);
@@ -230,6 +221,15 @@ void AddBillet()
 		}	
 		else
 			cout << "Billet " << numBillet << " valide" << endl;
+	// Creation et ouverture du fichiercsv
+	try
+	{
+		fichiercsv.open(strcat(nomFichier,"_lug.csv"),fstream::out);
+	}
+	catch(exception &e)
+	{
+		cout << "Erreur creation du fichier lug.csv" << endl;
+	}
 	for(int i=0;i<20;i++)
 	{
 		cout << "Poids du bagage n°" << i+1 << " <Enter si fini>: ";
