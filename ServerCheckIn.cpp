@@ -312,9 +312,9 @@ void *ThClient(void *)
 					{
 						typeSer = Nok;
 					}
-					sizeSer = strlen(msgRecv);
+					sizeSer = 20*sizeof(char);
 					msgSend = (char*)malloc(sizeSer);
-					sprintf(msgRecv, "ACK serv");
+					sprintf(msgSend, "ACK serv");
 					break;
 				case PayementDone:
 					//

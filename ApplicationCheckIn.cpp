@@ -294,7 +294,7 @@ void AddBillet()
 		sprintf(typerequete,"Y");
 	else
 		sprintf(typerequete,"N");
-	sendMsgRequest(handleSocket,PayementDone,typerequete,strlen(typerequete));
+	sendMsgRequest(handleSocket,PayementDone,typerequete,strlen(typerequete), finTrame);
 	receiveMsgRequest(handleSocket,&typeSer,&sizeSer,finTrame);
 }
 
