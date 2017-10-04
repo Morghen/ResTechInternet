@@ -212,7 +212,7 @@ void AddBillet()
 	cout << "Nombre d'accompagnants ? ";
 	cin >> nbVoyageurs;
 	sprintf(typerequete,"%s%c%d",numBillet,sepTrame,nbVoyageurs);
-	sendMsgRequest(handleSocket,CheckTicket,typerequete,strlen(typerequete));
+	sendMsgRequest(handleSocket,CheckTicket,typerequete,strlen(typerequete),finTrame);
 	receiveMsgRequest(handleSocket,&typeSer,&sizeSer,finTrame);
 		if(typeSer == Nok)
 		{

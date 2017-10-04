@@ -189,15 +189,17 @@ void *ThClient(void *)
 			msgRecv = receiveMsgRequest(handleS, &typeCli, &sizeCli, finTrame);
 			//bufMsg[sizeCli-1]='\0';
 			cout<< "Serv "<<pthread_self()<<" received : "<<msgRecv<<endl;
-		
+			char sepTmp[2];
+			sprintf(sepTmp, "%c", sepTrame);
 			switch(typeCli)
 			{
 				case Connect:
 					//
 					cout << "connect"<<endl;
 					typeSer = Ack;
-					tmpLogin = strtok(msgRecv, ",");
-					tmpMdp = strtok(NULL,",");
+					
+					tmpLogin = strtok(msgRecv, sepTmp);
+					tmpMdp = strtok(NULL,sepTmp);
 					cout << tmpLogin << "  -- " <<tmpMdp<<endl;
 					if(CheckLoginPassword(tmpLogin, tmpMdp) == -1)
 						typeSer = Nok;
@@ -210,7 +212,20 @@ void *ThClient(void *)
 				case CheckTicket:
 					//
 					cout << "check ticket"<<endl;
-					typeSer = Ack;
+					char *numBillet;
+					numBillet = strtok(msgRecv, sepTmp);
+					int nbPassager;
+					nbPassager = atoi(strtok(NULL,sepTmp));
+					if(Check_Ticket(numBillet, nbPassager) == 0)
+					{
+						//valide
+						typeSer = Ack;
+					}
+					else
+					{
+						//FAUX
+						typeSer = Nok;
+					}
 					break;
 				case CheckLuggage:
 					//
