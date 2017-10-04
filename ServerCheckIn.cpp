@@ -264,7 +264,7 @@ void *ThClient(void *)
 						{
 							pdsBaggage = (float*) realloc(pdsBaggage, sizeof(float)*(i+1));
 							pdsBaggage[i] = atof(tmpStr);
-							tmpStr = strtok(msgRecv, sepTmp);
+							tmpStr = strtok(NULL, sepTmp);
 							pdsTot += pdsBaggage[i];
 							if(pdsBaggage[i] > 20)
 								pdsEnTrop += pdsBaggage[i] - 20.0;
@@ -273,7 +273,7 @@ void *ThClient(void *)
 						nbrBaggage = i;
 					
 						typeSer = Ack;
-						sizeSer = sizeof(float)+2*sizeof(char);
+						sizeSer = 3*sizeof(float)+2*sizeof(char);
 						msgSend = (char*)malloc(sizeSer);
 					
 						memcpy(msgSend, &pdsTot, sizeof(float));
@@ -281,6 +281,10 @@ void *ThClient(void *)
 						memcpy(&(msgSend[sizeof(float)+sizeof(char)]), &pdsEnTrop, sizeof(float));
 						msgSend[sizeof(float)*2+sizeof(char)]=sepTrame;
 						memcpy(&(msgSend[2*sizeof(float)+2*sizeof(char)]), &resteAPayer, sizeof(float));
+						cout << "valeur server"<<endl;
+						cout << pdsTot<<endl;
+						cout << pdsEnTrop<<endl;
+						cout <<resteAPayer<<endl;
 					}
 					else
 					{

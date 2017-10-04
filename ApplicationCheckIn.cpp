@@ -252,27 +252,29 @@ void AddBillet()
 	}
 	// Envoie requete CHECK_LUGGAGE et recupere tous les calculs
 	int i=0, j=0;
-	char typerequete2[1000];
+	char typerequete2[1000]={'\0'};
 	while(poidsBagages[i] != 0)
 	{
 		sprintf(typerequete2,"%s%f%c",typerequete2,poidsBagages[i],sepTrame);
 		i++;
 	}
+	poidsBagages[i-1]='\0';
 	sendMsgRequest(handleSocket,CheckLuggage_1,typerequete2,strlen(typerequete2),finTrame);
-	receiveMsgRequest(handleSocket,&typeSer,&sizeSer,finTrame);
+	//receiveMsgRequest(handleSocket,&typeSer,&sizeSer,finTrame);
 	// Recupération info bagages
 	char* infoBaggages;
 	infoBaggages = receiveMsgRequest(handleSocket,&typeSer,&sizeSer,finTrame);
+	cout << "msg recu serveur "<<infoBaggages<<endl;
 	float pdsTot,pdsExces,pdsTaxes;
 	memcpy(&pdsTot,infoBaggages,sizeof(float));
 	memcpy(&pdsExces,&(infoBaggages[sizeof(float)+sizeof(char)]),sizeof(float));
 	memcpy(&pdsTaxes,&(infoBaggages[2*sizeof(float)+2*sizeof(char)]),sizeof(float));
-	sprintf(typerequete2,"\0");
 	while(typeBagage[j] != 'X')
 	{
 		sprintf(typerequete2,"%s%c%c",typerequete2,typeBagage[j],sepTrame);
 		j++;
 	}
+	typeBagage[j-1]='\0';
 	sendMsgRequest(handleSocket,CheckLuggage_2,typerequete2,strlen(typerequete2),finTrame);
 	receiveMsgRequest(handleSocket,&typeSer,&sizeSer,finTrame);
 	// Affichage du résumé
