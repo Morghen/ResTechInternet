@@ -276,6 +276,12 @@ float Check_Luggage(float* poidsBagages, int psize)
 		}
 	}
 }
+int Check_Luggage2(float* poidsBagages,char* typeBagages)
+{
+	fstream fs;
+	float poidsBagage[20];
+	char typeBagage[20];
+}
 
 
 

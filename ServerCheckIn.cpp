@@ -231,7 +231,7 @@ void *ThClient(void *)
 						typeSer = Nok;
 					}
 					break;
-				case CheckLuggage:
+				case CheckLuggage_1:
 					//
 					cout << "check luggage"<<endl;
 					char *tmpStr ;
@@ -263,6 +263,10 @@ void *ThClient(void *)
 					free(msgRecv);
 					free(msgSend);
 					break;
+				case CheckLuggage_2:
+					//
+					cout << "check type bagages"<<endl;
+					typeSer = Ack;
 				case PayementDone:
 					//
 					cout << "payement"<<endl;

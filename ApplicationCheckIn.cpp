@@ -216,7 +216,7 @@ void AddBillet()
 	char numBillet[100];
 	char nomFichier[100];
 	int nbVoyageurs=0;
-	char typerequete[1000];
+	char typerequete[20];
 	float poidsBagages[20]={0};
 	char typeBagage[20]={'X'};
 	char paiementOK;
@@ -264,15 +264,24 @@ void AddBillet()
 	//Fin encodage données & fermeture fichier
 	fichiercsv.close();
 	// Envoie requete CHECK_LUGGAGE et recupere tous les calculs
-	int i=0;
+	int i=0, j=0;
+	char typerequete2[100];
 	while(poidsBagages[i] != 0)
 	{
-		sprintf(typerequete,"%f%c",poidsBagages[i],sepTrame);
-		
+		sprintf(typerequete2,"%s%f%c",typerequete2,poidsBagages[i],sepTrame);
+		i++;
 	}
-	
-	
-	
+	sendMsgRequest(handleSocket,CheckLuggage_1,typerequete2,strlen(typerequete2),finTrame);
+	receiveMsgRequest(handleSocket,&typeSer,&sizeSer,finTrame);
+	sprintf(typerequete2,"\0");
+	while(typeBagage[j] != 'X')
+	{
+		sprintf(typerequete2,"%s%c%c",typerequete2,typeBagage[j],sepTrame);
+		j++;
+	}
+	sendMsgRequest(handleSocket,CheckLuggage_2,typerequete2,strlen(typerequete2),finTrame);
+	receiveMsgRequest(handleSocket,&typeSer,&sizeSer,finTrame);
+	// Affichage du résumé
 	cout << "*** Résumé du billet ***" << endl;
 	cout << "Numéro du billet : " << numBillet << endl;
 	cout << "Nombre d'accompagnants : " << nbVoyageurs << endl;
