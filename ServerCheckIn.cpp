@@ -317,24 +317,31 @@ void *ThClient(void *)
 					
 					if(nbrBaggage > 0 && numBillet != NULL && login == 1)
 					{
-						typeSer = Ack;
-						try
+						if(msgRecv[0] == 'y' || msgRecv[0]=='Y')
 						{
-							fichiercsv.open(strcat(numBillet,"_lug.csv"),fstream::out);
+							typeSer = Ack;
+							try
+							{
+								fichiercsv.open(strcat(numBillet,"_lug.csv"),fstream::out);
+							}
+							catch(exception &e)
+							{
+								cout << "Erreur creation du fichier lug.csv" << endl;
+							}
+							for(int i=0;i<nbrBaggage;i++)
+							{
+								if(valise[i] == 'O' || valise[i] == 'o')
+									fichiercsv << numBillet << "-1430-00" << i << ";" << "VALISE\n";
+								else
+									fichiercsv << numBillet << "-1430-00" << i << ";" << "PASVALISE\n";
+							}
+							if(fichiercsv.is_open() == true)
+								fichiercsv.close();
 						}
-						catch(exception &e)
+						else
 						{
-							cout << "Erreur creation du fichier lug.csv" << endl;
+							typeSer = Nok;
 						}
-						for(int i=0;i<nbrBaggage;i++)
-						{
-							if(valise[i] == 'O' || valise[i] == 'o')
-								fichiercsv << numBillet << "-1430-00" << i << ";" << "VALISE\n";
-							else
-								fichiercsv << numBillet << "-1430-00" << i << ";" << "PASVALISE\n";
-						}
-						if(fichiercsv.is_open() == true)
-							fichiercsv.close();
 					}
 					else
 					{
