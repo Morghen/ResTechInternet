@@ -266,9 +266,9 @@ void *ThClient(void *)
 					
 					memcpy(msgSend, &pdsTot, sizeof(float));
 					msgSend[sizeof(float)]=sepTrame;
-					memcpy(&(msgSend[sizeof(float)+sizeof(char)]), &pdsTot, sizeof(float));
+					memcpy(&(msgSend[sizeof(float)+sizeof(char)]), &pdsEnTrop, sizeof(float));
 					msgSend[sizeof(float)*2]=sepTrame;
-					memcpy(&(msgSend[2*sizeof(float)+2*sizeof(char)]), &pdsTot, sizeof(float));
+					memcpy(&(msgSend[2*sizeof(float)+2*sizeof(char)]), &resteAPayer, sizeof(float));
 
 					break;
 				case CheckLuggage_2:

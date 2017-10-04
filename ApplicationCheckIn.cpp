@@ -265,7 +265,7 @@ void AddBillet()
 	fichiercsv.close();
 	// Envoie requete CHECK_LUGGAGE et recupere tous les calculs
 	int i=0, j=0;
-	char typerequete2[100];
+	char typerequete2[1000];
 	while(poidsBagages[i] != 0)
 	{
 		sprintf(typerequete2,"%s%f%c",typerequete2,poidsBagages[i],sepTrame);
