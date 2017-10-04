@@ -10,6 +10,7 @@
 #include <netdb.h>
 #include <string.h>
 #include <unistd.h>
+#include <signal.h>
 #include "libUtils.h"
 #include "socketLib.h"
 #include "SocketException.h"
@@ -24,6 +25,9 @@ using namespace std;
 void Identify();
 void BilletsManager();
 void AddBillet();
+
+void HandlerSIGINT(int s);
+
 
 char *msgSend;
 char *msgRecv;
@@ -45,6 +49,14 @@ int main()
 
 	// Init et ouverture des sockets
 	srand(time(NULL));
+	
+	//sig int handler
+		struct sigaction sigAct;
+
+	  	sigAct.sa_handler = HandlerSIGINT;
+	  	sigAct.sa_flags = 0;
+	  	sigemptyset(&sigAct.sa_mask);
+		sigaction(SIGINT,&sigAct,NULL); 
 	
 	try
 	{
@@ -188,7 +200,7 @@ void BilletsManager()
 				break;
 			case '2':
 				char typerequete[20];
-				sprintf(typerequete,"Deconnect%c");
+				sprintf(typerequete,"Deconnect");
 				sendMsgRequest(handleSocket,Deconnect,typerequete,strlen(typerequete),finTrame);	//change de compte
 				return;
 			default:
@@ -204,7 +216,7 @@ void AddBillet()
 	char numBillet[100];
 	char nomFichier[100];
 	int nbVoyageurs=0;
-	char typerequete[20];
+	char typerequete[1000];
 	float poidsBagages[20]={0};
 	char typeBagage[20]={'X'};
 	char paiementOK;
@@ -252,6 +264,14 @@ void AddBillet()
 	//Fin encodage données & fermeture fichier
 	fichiercsv.close();
 	// Envoie requete CHECK_LUGGAGE et recupere tous les calculs
+	int i=0;
+	while(poidsBagages[i] != 0)
+	{
+		
+	}
+	
+	
+	
 	cout << "*** Résumé du billet ***" << endl;
 	cout << "Numéro du billet : " << numBillet << endl;
 	cout << "Nombre d'accompagnants : " << nbVoyageurs << endl;
@@ -265,6 +285,13 @@ void AddBillet()
 
 
 
+void HandlerSIGINT(int s)
+{
+	
+	close(handleSocket);
+	exit(0);
+	
+}
 
 
 

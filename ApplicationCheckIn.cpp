@@ -216,7 +216,7 @@ void AddBillet()
 	char numBillet[100];
 	char nomFichier[100];
 	int nbVoyageurs=0;
-	char typerequete[20];
+	char typerequete[1000];
 	float poidsBagages[20]={0};
 	char typeBagage[20]={'X'};
 	char paiementOK;
@@ -264,6 +264,15 @@ void AddBillet()
 	//Fin encodage données & fermeture fichier
 	fichiercsv.close();
 	// Envoie requete CHECK_LUGGAGE et recupere tous les calculs
+	int i=0;
+	while(poidsBagages[i] != 0)
+	{
+		sprint(typerequete,"%f%c",poidsBagages[i],sepTrame);
+		
+	}
+	
+	
+	
 	cout << "*** Résumé du billet ***" << endl;
 	cout << "Numéro du billet : " << numBillet << endl;
 	cout << "Nombre d'accompagnants : " << nbVoyageurs << endl;
