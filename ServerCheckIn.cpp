@@ -165,7 +165,7 @@ void *ThClient(void *)
 		int handleS;
 		char *msgRecv, *msgSend;
 		char *tmpLogin, *tmpMdp;
-		
+		fstream fichiercsv;
 		TypeRequete typeCli, typeSer;
 		int sizeCli, sizeSer;
 	
@@ -185,6 +185,8 @@ void *ThClient(void *)
 		//cout << "recup handle"<<endl;
 		float *pdsBaggage=NULL;
 		char *valise = NULL;
+		char *numBillet;
+		int login=0;
 		while(1)
 		{
 			//
@@ -214,6 +216,7 @@ void *ThClient(void *)
 						typeSer = Nok;
 					sizeSer = strlen(msgRecv);
 					msgSend = (char*)malloc(sizeSer);
+					login = 1;
 					break;
 				case Deconnect:
 					//
@@ -221,22 +224,29 @@ void *ThClient(void *)
 					typeSer = Ack;
 					sizeSer = strlen(msgRecv);
 					msgSend = (char*)malloc(sizeSer);
+					login =0;
 					break;
 				case CheckTicket:
 					//
 					cout << "check ticket"<<endl;
-					char *numBillet;
-					numBillet = strtok(msgRecv, sepTmp);
-					int nbPassager;
-					nbPassager = atoi(strtok(NULL,sepTmp));
-					if(Check_Ticket(numBillet, nbPassager) == 0)
+					if(login == 1)
 					{
-						//valide
-						typeSer = Ack;
+						numBillet = strtok(msgRecv, sepTmp);
+						int nbPassager;
+						nbPassager = atoi(strtok(NULL,sepTmp));
+						if(Check_Ticket(numBillet, nbPassager) == 0)
+						{
+							//valide
+							typeSer = Ack;
+						}
+						else
+						{
+							//FAUX
+							typeSer = Nok;
+						}
 					}
 					else
 					{
-						//FAUX
 						typeSer = Nok;
 					}
 					sizeSer = strlen(msgRecv);
@@ -245,36 +255,42 @@ void *ThClient(void *)
 				case CheckLuggage_1:
 					//
 					cout << "check luggage"<<endl;
-					char *tmpStr ;
-					tmpStr= strtok(msgRecv, sepTmp);
-					int i;
-					for(i=0; tmpStr != NULL;i++)
+					if(login == 1)
 					{
-						pdsBaggage = (float*) realloc(pdsBaggage, sizeof(float)*(i+1));
-						pdsBaggage[i] = atof(tmpStr);
-						tmpStr = strtok(msgRecv, sepTmp);
-						pdsTot += pdsBaggage[i];
-						if(pdsBaggage[i] > 20)
-							pdsEnTrop += pdsBaggage[i] - 20.0;
+						char *tmpStr ;
+						tmpStr= strtok(msgRecv, sepTmp);
+						int i;
+						for(i=0; tmpStr != NULL;i++)
+						{
+							pdsBaggage = (float*) realloc(pdsBaggage, sizeof(float)*(i+1));
+							pdsBaggage[i] = atof(tmpStr);
+							tmpStr = strtok(msgRecv, sepTmp);
+							pdsTot += pdsBaggage[i];
+							if(pdsBaggage[i] > 20)
+								pdsEnTrop += pdsBaggage[i] - 20.0;
+						}
+						resteAPayer = pdsEnTrop*2.95;
+						nbrBaggage = i;
+					
+						typeSer = Ack;
+						sizeSer = sizeof(float)+2*sizeof(char);
+						msgSend = (char*)malloc(sizeSer);
+					
+						memcpy(msgSend, &pdsTot, sizeof(float));
+						msgSend[sizeof(float)]=sepTrame;
+						memcpy(&(msgSend[sizeof(float)+sizeof(char)]), &pdsEnTrop, sizeof(float));
+						msgSend[sizeof(float)*2+sizeof(char)]=sepTrame;
+						memcpy(&(msgSend[2*sizeof(float)+2*sizeof(char)]), &resteAPayer, sizeof(float));
 					}
-					resteAPayer = pdsEnTrop*2.95;
-					nbrBaggage = i;
-					
-					typeSer = Ack;
-					sizeSer = sizeof(float)+2*sizeof(char);
-					msgSend = (char*)malloc(sizeSer);
-					
-					memcpy(msgSend, &pdsTot, sizeof(float));
-					msgSend[sizeof(float)]=sepTrame;
-					memcpy(&(msgSend[sizeof(float)+sizeof(char)]), &pdsEnTrop, sizeof(float));
-					msgSend[sizeof(float)*2+sizeof(char)]=sepTrame;
-					memcpy(&(msgSend[2*sizeof(float)+2*sizeof(char)]), &resteAPayer, sizeof(float));
-
+					else
+					{
+						typeSer = Nok;
+					}
 					break;
 				case CheckLuggage_2:
 					//
 					cout << "check type bagages"<<endl;
-					if(valise == NULL && nbrBaggage > 0)
+					if(valise == NULL && nbrBaggage > 0 && login == 1)
 					{
 						valise = (char*) malloc(sizeof(char)*nbrBaggage);
 						typeSer = Ack;
@@ -298,7 +314,32 @@ void *ThClient(void *)
 				case PayementDone:
 					//
 					cout << "payement"<<endl;
-					typeSer = Ack;
+					
+					if(nbrBaggage > 0 && numBillet != NULL && login == 1)
+					{
+						typeSer = Ack;
+						try
+						{
+							fichiercsv.open(strcat(numBillet,"_lug.csv"),fstream::out);
+						}
+						catch(exception &e)
+						{
+							cout << "Erreur creation du fichier lug.csv" << endl;
+						}
+						for(int i=0;i<nbrBaggage;i++)
+						{
+							if(valise[i] == 'O' || valise[i] == 'o')
+								fichiercsv << numBillet << "-1430-00" << i << ";" << "VALISE\n";
+							else
+								fichiercsv << numBillet << "-1430-00" << i << ";" << "PASVALISE\n";
+						}
+						if(fichiercsv.is_open() == true)
+							fichiercsv.close();
+					}
+					else
+					{
+						typeSer = Nok;
+					}
 					if(pdsBaggage != NULL)
 						free(pdsBaggage);
 					if(valise != NULL)
