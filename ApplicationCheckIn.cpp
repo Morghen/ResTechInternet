@@ -173,24 +173,26 @@ void Identify()
 void BilletsManager()
 {
 	char choix;
-	cout << "*** Gestions des billets ***" << endl;
-	cout << "1. Ajouter un billet" << endl;
-	cout << "2. Changer de compte" << endl;
-	cout << "6. Quitter" << endl;
-	cout << "Votre choix : ";
-	cin >> choix;
-	switch(choix)
+	while(1)
 	{
-		case '1':
-			AddBillet(); // Ajout d'un billet
-			break;
-		case '2':
-			//change de compte
-			return;
-		default:
-			exit(0);			
+		cout << "*** Gestions des billets ***" << endl;
+		cout << "1. Ajouter un billet" << endl;
+		cout << "2. Changer de compte" << endl;
+		cout << "6. Quitter" << endl;
+		cout << "Votre choix : ";
+		cin >> choix;
+		switch(choix)
+		{
+			case '1':
+				AddBillet(); // Ajout d'un billet
+				break;
+			case '2':
+				//change de compte
+				return;
+			default:
+				exit(0);			
+		}
 	}
-	
 }
 
 void AddBillet()
@@ -214,13 +216,13 @@ void AddBillet()
 	sprintf(typerequete,"%s%c%d",numBillet,sepTrame,nbVoyageurs);
 	sendMsgRequest(handleSocket,CheckTicket,typerequete,strlen(typerequete),finTrame);
 	receiveMsgRequest(handleSocket,&typeSer,&sizeSer,finTrame);
-		if(typeSer == Nok)
-		{
-			cout << "Billet introuvable ou nbVoyageurs incorrect" << endl;
-			return;
-		}	
-		else
-			cout << "Billet " << numBillet << " valide" << endl;
+	if(typeSer == Nok)
+	{
+		cout << "Billet introuvable ou nbVoyageurs incorrect" << endl;
+		return;
+	}	
+	else
+		cout << "Billet " << numBillet << " valide" << endl;
 	// Creation et ouverture du fichiercsv
 	try
 	{
