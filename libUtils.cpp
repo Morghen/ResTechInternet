@@ -227,7 +227,7 @@ int Check_Ticket(char* numBillet,int nbVoyageurs)
 	sprintf(voyageurs,"%d",nbVoyageurs);
 	try
 	{
-		fs.open(numBillet,fstream::in);
+		fs.open("ticket_list.csv",fstream::in);
 	}
 	catch(exception &e)
 	{
