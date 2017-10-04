@@ -187,7 +187,9 @@ void BilletsManager()
 				AddBillet(); // Ajout d'un billet
 				break;
 			case '2':
-				//change de compte
+				char typerequete[20];
+				sprintf(typerequete,"Deconnect");
+				sendMsgRequest(handleSocket,Deconnect,typerequete,strlen(typerequete),finTrame);	//change de compte
 				return;
 			default:
 				exit(0);			
