@@ -191,6 +191,10 @@ void *ThClient(void *)
 			cout<< "Serv "<<pthread_self()<<" received : "<<msgRecv<<endl;
 			char sepTmp[2];
 			sprintf(sepTmp, "%c", sepTrame);
+			float *pdsBaggage = (float*)malloc(sizeof(float));
+			float pdsEnTrop=0;
+			float resteAPayer=0;
+			float pdsTot=0;
 			switch(typeCli)
 			{
 				case Connect:
@@ -230,7 +234,34 @@ void *ThClient(void *)
 				case CheckLuggage:
 					//
 					cout << "check luggage"<<endl;
+					char *tmpStr ;
+					tmpStr= strtok(msgRecv, sepTmp);
+					for(int i=0; tmpStr != NULL;i++)
+					{
+						pdsBaggage = (float*) realloc(pdsBaggage, sizeof(float)*(i+1));
+						pdsBaggage[i] = atof(tmpStr);
+						tmpStr = strtok(msgRecv, sepTmp);
+						pdsTot += pdsBaggage[i];
+						if(pdsBaggage[i] > 20)
+							pdsEnTrop += pdsBaggage[i] - 20.0;
+					}
+					resteAPayer = pdsEnTrop*0.338983;
+					
 					typeSer = Ack;
+					sizeSer = sizeof(float)+2*sizeof(char);
+					msgSend = (char*)malloc(sizeSer);
+					
+					memcpy(msgSend, &pdsTot, sizeof(float));
+					msgSend[sizeof(float)]=sepTrame;
+					memcpy(&(msgSend[sizeof(float)+sizeof(char)]), &pdsTot, sizeof(float));
+					msgSend[sizeof(float)*2]=sepTrame;
+					memcpy(msgSend, &pdsTot, sizeof(float));
+
+		
+					sendMsgRequest(handleS, typeSer, msgSend, sizeSer, finTrame);
+					cout<< "Serv "<<pthread_self()<<" sended : "<<msgSend<<endl;
+					free(msgRecv);
+					free(msgSend);
 					break;
 				case PayementDone:
 					//
@@ -250,6 +281,7 @@ void *ThClient(void *)
 			cout<< "Serv "<<pthread_self()<<" sended : "<<msgSend<<endl;
 			free(msgRecv);
 			free(msgSend);
+			free(pdsBaggage);
 		
 		}
 		cout << pthread_self() << " je meurs" << endl;

@@ -267,7 +267,7 @@ void AddBillet()
 	int i=0;
 	while(poidsBagages[i] != 0)
 	{
-		sprint(typerequete,"%f%c",poidsBagages[i],sepTrame);
+		sprintf(typerequete,"%f%c",poidsBagages[i],sepTrame);
 		
 	}
 	
