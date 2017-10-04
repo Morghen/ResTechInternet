@@ -291,10 +291,10 @@ void AddBillet()
 	cin.ignore();
 	cin >> paiementOK; // Envoie requete PAYMENT_DONE
 	if(paiementOK == 'y' || paiementOK == 'Y')
-		sprintf(typerequete,"Y");
+		typerequete[0] = 'Y';
 	else
-		sprintf(typerequete,"N");
-	sendMsgRequest(handleSocket,PayementDone,typerequete,strlen(typerequete), finTrame);
+		typerequete[0] = 'N';
+	sendMsgRequest(handleSocket,PayementDone,typerequete,sizeof(char),finTrame);
 	receiveMsgRequest(handleSocket,&typeSer,&sizeSer,finTrame);
 }
 

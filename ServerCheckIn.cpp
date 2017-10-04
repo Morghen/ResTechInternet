@@ -184,9 +184,11 @@ void *ThClient(void *)
 		pthread_mutex_unlock(&mutexHandle);
 		//cout << "recup handle"<<endl;
 		float *pdsBaggage=NULL;
-		char *valise = NULL;
+		char *valise=NULL;
 		char *numBillet;
 		int login=0;
+		int nbrBaggage=0;
+		
 		while(1)
 		{
 			//
@@ -201,7 +203,7 @@ void *ThClient(void *)
 			float pdsEnTrop=0;
 			float resteAPayer=0;
 			float pdsTot=0;
-			int nbrBaggage=0;
+
 			switch(typeCli)
 			{
 				case Connect:
@@ -273,7 +275,8 @@ void *ThClient(void *)
 						}
 						resteAPayer = pdsEnTrop*2.95;
 						nbrBaggage = i;
-					
+						cout << "nbreBaggage : " << nbrBaggage << endl;
+						
 						typeSer = Ack;
 						sizeSer = 3*sizeof(float)+2*sizeof(char);
 						msgSend = (char*)malloc(sizeSer);
@@ -296,9 +299,10 @@ void *ThClient(void *)
 				case CheckLuggage_2:
 					//
 					cout << "check type bagages"<<endl;
-					if(valise == NULL && nbrBaggage > 0 && login == 1)
+					if((valise == NULL) && (nbrBaggage > 0) && (login == 1))
 					{
-						valise = (char*) malloc(sizeof(char)*nbrBaggage);
+						cout << "avant malloc nbreBaggage " << nbrBaggage << " taille : "  << sizeof(char)*nbrBaggage <<  endl;
+						valise = (char*)malloc(sizeof(char)*(nbrBaggage));
 						typeSer = Ack;
 						//
 						int i;
@@ -312,6 +316,7 @@ void *ThClient(void *)
 					}
 					else
 					{
+						cout << "passe par Nok dans CheckLuggage_2" << endl;
 						typeSer = Nok;
 					}
 					sizeSer = 20*sizeof(char);
