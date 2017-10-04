@@ -22,7 +22,7 @@
 
 using namespace std;
 
-#define	NB_THREADS	5
+#define	NB_THREADS	1
 #define	PORT			(50000)
 #define MAXSTRING		(500)
 
@@ -32,7 +32,7 @@ pthread_t ThreadId[NB_THREADS] = {0};
 void HandlerSIGINT(int s);
 
 int handleService[NB_THREADS] = {0};
-int nbHandleWait = 0;
+int nbHandleWait = -1;
 pthread_mutex_t mutexHandle;
 pthread_cond_t condHandle;
 int handleServer;
@@ -114,27 +114,32 @@ int main()
 			
 			cout << "accept"<<endl;
 			handleTmp = ServerAccept(handleServer, paddrsock);
-			cout << "client accepter"<<endl;
+			
 			
 			//donner le handleTmp à un thread
 			pthread_mutex_lock(&mutexHandle);
 	
 			for(i=0; i < NB_THREADS; i++)
 			{
-				if(handleService[i]== 0 )
+				cout << handleService[i] << " - ";
+				if(handleService[i] == 0 )
 				{
 					handleService[i] = handleTmp;
-					nbHandleWait++;
-					i = NB_THREADS +1;
+					nbHandleWait = i;
+					i = NB_THREADS ;
+					cout << "client accepter"<<endl;
 				}
 			}
+			cout <<endl;
 			pthread_mutex_unlock(&mutexHandle);
 			pthread_cond_signal(&condHandle);
 			
 			if(i == NB_THREADS)
 			{
 				//répondre qu'on ne peut pas le prendre
+				shutdown(handleTmp, SHUT_RDWR);
 				close(handleTmp);
+				cout << "client refuser"<<endl;
 			}
 		}
 		
@@ -168,19 +173,17 @@ void *ThClient(void *)
 		fstream fichiercsv;
 		TypeRequete typeCli, typeSer;
 		int sizeCli, sizeSer;
+		int nbHandle;
 	
 		pthread_mutex_lock(&mutexHandle);
-		while(nbHandleWait == 0)
+		while(nbHandleWait == -1)
 			pthread_cond_wait(&condHandle,&mutexHandle);
+		
+		handleS = handleService[nbHandleWait];
+		nbHandle = nbHandleWait;
+		nbHandleWait=-1;
+		
 	
-		for(int i=0; i<NB_THREADS; i++)
-		{
-			if(handleService[i] != 0)
-			{
-				handleS = handleService[i];
-				handleService[i] = 0;
-			}
-		}
 		pthread_mutex_unlock(&mutexHandle);
 		//cout << "recup handle"<<endl;
 		float *pdsBaggage=NULL;

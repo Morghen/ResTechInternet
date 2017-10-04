@@ -144,6 +144,8 @@ int sendSize(int phandle, char *pbuf, int psize)
 
 	tmpLec = send(phandle, pbuf, psize, 0);
 	if(tmpLec == -1)
+		throw SocketException("Error send unknow");
+	if(tmpLec != psize)
 		throw SocketException("Error send size too short");
 
 	//memcpy(pbuf, buf, sizeof(psize));

@@ -66,12 +66,12 @@ int CheckLoginPassword(char* lg,char* password)
 	while(fs.peek() != EOF) // Recherche tant que EOF n'est pas atteint
 	{
 		fs.getline(tmp,100,';');
-		cout << "Comparaison lg & tmp :" << lg << " & " << tmp << endl;
+		//cout << "Comparaison lg & tmp :" << lg << " & " << tmp << endl;
 		if(strcmp(lg,tmp) == 0)
 		{
-			cout << "Login trouve,recherche mdp" << endl;
+			//cout << "Login trouve,recherche mdp" << endl;
 			fs.getline(tmp,100);
-			cout << "Comparaison password & tmp :" << password << " & " << tmp << endl;
+			//cout << "Comparaison password & tmp :" << password << " & " << tmp << endl;
 			if(strcmp(password,tmp) == 0)
 			{
 				cout << "Login & password correct" << endl;
@@ -237,12 +237,12 @@ int Check_Ticket(char* numBillet,int nbVoyageurs)
 	while(fs.peek() != EOF) // Recherche tant que EOF n'est pas atteint
 	{
 		fs.getline(tmp,100,';');
-		cout << "Recherche du numBillet :" << numBillet << " & " << tmp << endl;
+		//cout << "Recherche du numBillet :" << numBillet << " & " << tmp << endl;
 		if(strcmp(numBillet,tmp) == 0)
 		{
-			cout << "Billet trouve,recherche accompagnants" << endl;
+			//cout << "Billet trouve,recherche accompagnants" << endl;
 			fs.getline(tmp,100);
-			cout << "Comparaison voyageurs & tmp :" << voyageurs << " & " << tmp << endl;
+			//cout << "Comparaison voyageurs & tmp :" << voyageurs << " & " << tmp << endl;
 			if(strcmp(voyageurs,tmp) == 0)
 			{
 				cout << "NumBillet & nbVoyageurs trouvé" << endl;
@@ -258,7 +258,7 @@ int Check_Ticket(char* numBillet,int nbVoyageurs)
 		}
 		else
 		{
-			cout << "Pas encore trouve le billet" << endl;
+			//cout << "Pas encore trouve le billet" << endl;
 			fs.getline(tmp,100); // On passe le password
 		}
 	}
