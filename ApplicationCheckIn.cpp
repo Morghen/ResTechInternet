@@ -281,6 +281,7 @@ void HandlerSIGINT(int s)
 {
 	
 	close(handleSocket);
+	exit(0);
 	
 }
 
