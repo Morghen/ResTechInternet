@@ -22,8 +22,7 @@
 
 using namespace std;
 
-#define	NB_THREADS	1
-#define	PORT			(50000)
+#define	NB_THREADS	5
 #define MAXSTRING		(500)
 
 
@@ -90,10 +89,10 @@ int main()
 		if(fichierconf.is_open() == false)
 		{
 			fichierconf.open("server_checkin.conf",fstream::out);
-			fichierconf << "Port_Service=70000"<<endl<<"Port_Admin=70009"<<endl;
+			fichierconf << "Port_Service=50000"<<endl<<"Port_Admin=50009"<<endl;
 			fichierconf << "sep-trame=$"<<endl;
 			fichierconf << "fin-trame=#"<<endl<<"sep-csv=;"<<endl;
-			portServer = 70000;
+			portServer = 50000;
 			sepTrame = '$';
 			finTrame = '#';
 		}
@@ -410,7 +409,7 @@ void *ThClient(void *)
 	{
 		cout << "Erreur inconnue "<< endl;
 		perror(" t");
-		exit(0);
+		pthread_exit(0);
 	}
 	return NULL;
 }

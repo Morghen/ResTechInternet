@@ -19,9 +19,6 @@
 
 using namespace std;
 
-
-#define	PORT	50000
-
 void Identify();
 void BilletsManager();
 void AddBillet();
@@ -83,10 +80,10 @@ int main()
 		if(fichierconf.is_open() == false)
 		{
 			fichierconf.open("server_checkin.conf",fstream::out);
-			fichierconf << "Port_Service=70000"<<endl<<"Port_Admin=70009"<<endl;
+			fichierconf << "Port_Service=50000"<<endl<<"Port_Admin=50009"<<endl;
 			fichierconf << "sep-trame=$"<<endl;
 			fichierconf << "fin-trame=#"<<endl<<"sep-csv=;"<<endl;
-			portServer = 70000;
+			portServer = 50000;
 			sepTrame = '$';
 			finTrame = '#';
 		}
