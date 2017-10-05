@@ -110,8 +110,6 @@ int sendMsgRequest(int phandle, TypeRequete pt, char *pmsg, int psize, char finT
 	memcpy((pbuf+sizeof(int)), pmsg, psize);
 	//cout << "send : "<< pbuf<<endl;
 	
-	
-	
 	pbuf[taille-1]=finTrame;
 	//cout << "send : "<< pbuf<<endl;
 	
